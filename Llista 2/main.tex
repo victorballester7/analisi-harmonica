@@ -2,7 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsthm, amsmath, mathtools, amssymb}
 \usepackage[intlimits]{esint}
-\usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[left=1.5cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
 \usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
 \usepackage[catalan]{babel}
 \usepackage{titlesec}
@@ -157,40 +157,23 @@
         $$\lim_{\lambda\to\infty}\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}=0$$
         \textbf{\textit{uniformement en $x$.}}
 
-        Recordem que una funció monòtona $g:[-\pi,\pi]\rightarrow\RR$ és Lebesgue mesurable perquè $\forall r\in\RR$ $\{f>r\}$ és un interval o el conjunt buit, que són ambdós mesurables. A més, si $g$ és acotada, com que $g$ està definida en un conjunt acotat, $g$ és integrable Lebesgue. En el cas de ser monòtona a trossos, podem escriure $g$ com:
-        $$g(x)=\sum_{k=1}^ng(x)\vf{1}_{[x_{k},x_{k+1}]}=:\sum_{k=1}^ng_k(x)$$
-        on cada $g_k:[x_k,x_{k+1}]\rightarrow\RR$ és monòtona i per tant, mesurable. Com que la suma de mesurables és mesurable, tenim que $g$ és mesurable i integrable (perquè és acotada).
-
-        Suposem primer que $f(t)=\vf{1}_{[a,b]}(t)$ i $g(t)=\vf{1}_{[c,d]}(t)$ amb $[a,b],[c,d]\subseteq[-\pi,\pi]$. Aleshores:
-        \begin{multline*}
-          I:=\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}=\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}g(t)\sin(\lambda t)\dd{t}=\int_{\max(-\pi,a-x,c)}^{\min(\pi,b-x,d)}\sin(\lambda t)\dd{t}=\\
-          =\frac{\sin(\lambda \max(-\pi,a-x,c))-\sin(\lambda \min(\pi,b-x,d))}{\lambda}
-        \end{multline*}
-        Ara bé tenim que:
-        $$ \frac{-2}{\lambda}\leq I\leq \frac{2}{\lambda}$$
-        que pel teorema del sandvitx se'n va a 0 quan $\lambda\to\infty$ independentment de $x$. Ara suposem que $g(t)=\sum_{k=1}^N\beta_k\vf{1}_{[c_k,d_k]}(t)$,on els $[c_k,d_k]\subseteq[-\pi,\pi]$ són dos a dos disjunts. Tenim que llavors:
-        $$I=\sum_{k=1}^N\beta_k\int_{\max(-\pi,a-x,c_k)}^{\min(\pi,b-x,d_k)}\sin(\lambda t)\dd{t}=\sum_{k=1}^N\beta_k\frac{\sin(\lambda \max(-\pi,a-x,c_k))-\sin(\lambda \min(\pi,b-x,d_k))}{\lambda}$$
-        Ara bé tenim que:
-        $$ \frac{-2N\min_{k\in\{1,\ldots,N\}}\beta_k}{\lambda}\leq I\leq \frac{2N\max_{k\in\{1,\ldots,N\}}\beta_k}{\lambda}$$
-        que pel teorema del sandvitx se'n va a 0 quan $\lambda\to\infty$ independentment de $x$. Finalment com que $g$ és integrable, tenim que $\forall\varepsilon>0$ existeix una funció simple $g_\varepsilon$ tal que $\int_{-\pi}^{\pi}\abs{g(t)-g_\varepsilon(t)}\dd{t}<\varepsilon$.
-        Però llavors, prenent $\varepsilon=\frac{1}{\lambda}$ tenim que:
+        Primer suposem que $g$ és monòtona. Com que $f$ és integrable, sabem que $\forall \varepsilon >0$ podem trobar $f_{\varepsilon}=\sum_{k=1}^Mc_{k,\varepsilon}\vf{1}_{[a_{k,\varepsilon},b_{k,\varepsilon}]}$ esglaonada tal que $$\int_{-\pi}^{\pi}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}<\varepsilon$$ Denotem per $\alpha_{k,\varepsilon}:=\max(-\pi,a_{k,\varepsilon}-x)$ i $\beta_{k,\varepsilon}=\min(\pi,b_{k,\varepsilon}-x)$. Llavors:
         \begin{align*}
-          \abs{I} & =\abs{\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}(g(t)-g_\varepsilon(t))\sin(\lambda t)\dd{t}+\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}g_\varepsilon(t)\sin(\lambda t)\dd{t}} \\
-                  & \leq\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}\abs{g(t)-g_\varepsilon(t)}\dd{t}+\abs{\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}g_\varepsilon(t)\sin(\lambda t)\dd{t}}         \\
-                  & \leq\int_{-\pi}^{\pi}\abs{g(t)-g_\varepsilon(t)}\dd{t}+\abs{\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}g_\varepsilon(t)\sin(\lambda t)\dd{t}}                             \\
-                  & \leq\frac{1}{\lambda}+\abs{\int_{\max(-\pi,a-x)}^{\min(\pi,b-x)}g_\varepsilon(t)\sin(\lambda t)\dd{t}}
+          \abs{\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}} & \leq \int_{-\pi}^{\pi}\abs{(f(x+t)-f_{\varepsilon}(x+t))g(t)\sin(\lambda t)}\dd{t}+\abs{\int_{-\pi}^{\pi}f_{\varepsilon}(x+t)g(t)\sin(\lambda t)\dd{t}}                                                                                                                             \\
+                                                                 & \leq \norm{g}_\infty\int_{-\pi-x}^{\pi-x}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{\int_{-\pi}^{\pi}\vf{1}_{[a_{k,\varepsilon},b_{k,\varepsilon}]}(x+t)g(t)\sin(\lambda t)\dd{t}}                                                                 \\
+                                                                 & = \norm{g}_\infty\int_{-\pi}^{\pi}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{\int_{\alpha_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}                                                                                       \\
+                                                                 & < \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{g({\alpha_{k,\varepsilon}}^+)\int_{\alpha_{k,\varepsilon}}^{\xi_{k,\varepsilon}}\sin(\lambda t)\dd{t}+g({\beta_{k,\varepsilon}}^-)\int_{\xi_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}
         \end{align*}
-        que se'n va a 0 uniformement en $x$ quan $\lambda\to\infty$.
+        on $\xi_{k,\varepsilon}\in[{\alpha_{k,\varepsilon}},{\beta_{k,\varepsilon}}]$, pel teorema del valor mitjà per integrals. Finalment tenim que:
+        \begin{align*}
+          \abs{\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}} & < \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{g({\alpha_{k,\varepsilon}}^+)\int_{\alpha_{k,\varepsilon}}^{\xi_{k,\varepsilon}}\sin(\lambda t)\dd{t}+g({\beta_{k,\varepsilon}}^-)\int_{\xi_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}    \\
+                                                                 & \leq \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\norm{g}_\infty\left(\frac{\abs{\cos(\lambda \alpha_{k,\varepsilon})-\cos(\lambda\xi_{k,\varepsilon})}}{\lambda}+\frac{\abs{\cos(\lambda \xi_{k,\varepsilon})-\cos(\lambda \beta_{k,\varepsilon})}}{\lambda}\right) \\
+                                                                 & \leq \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\norm{g}_\infty\frac{4}{\lambda}
+        \end{align*}
 
-        Ara suposem que $f$ és una funció simple de la forma $f(x)=\sum_{k=1}^M\alpha_k\vf{1}_{[a_k,b_k]}$, on els $[a_k,b_k]\subseteq[-\pi,\pi]$ són dos a dos disjunts. Per la linealitat de la integral tenim que:
-        \begin{equation*}
-          I=\sum_{k=1}^M\alpha\int_{\max(-\pi,a_k-x)}^{\min(\pi,b_k-x)}g(t)\sin(\lambda t)\dd{t}
-        \end{equation*}
-        Com que cada sumand ja em vist que se'n va a zero uniformement en $x$ quan $\lambda\to\infty$, la suma (finita) també se n'hi va.
+        I triant per exemple $\varepsilon=\frac{1}{\lambda}$ tenim que això últim tendeix a 0 uniformement en $x$.
 
-        Ara, pel cas general, sabem que per a cada $x\in\RR$ i $\forall \varepsilon >0$ podem trobar $f_{\varepsilon, x}$ esglaonada tal que $$\int_{-\pi}^{\pi}\abs{f(x+t)-f_{\varepsilon,x}(x+t)}\dd{t}<\varepsilon$$ I llavors:
-        $$\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t} = \int_{-\pi}^{\pi}(f(x+t)-f_{\varepsilon,x}(x+t))g(t)\sin(\lambda t)\dd{t}+\int_{-\pi}^{\pi}f_{\varepsilon,x}(x+t)g(t)\sin(\lambda t)\dd{t}$$
-        La primera integral està acotada per $\varepsilon \max_{t\in[-\pi,\pi]}\abs{g(t)}$, que prenent $\varepsilon=\frac{1}{\lambda}$, tendeix a 0 quan $\lambda\to\infty$, a més independentment del punt $x$. L'altra integral ja hem vist que tendeix a 0 quan $\lambda\to\infty$. Per tant, la convergència és uniforme.
+        Si $g$ és monòtona a trossos, aleshores $g(t)=\sum_{k=1}^Ng_k\vf{1}_{[c_k,d_k]}(t)$ amb $g_k:[c_k,d_k]\rightarrow\RR$ monòtona. Llavors, aplicant el que acabem de demostrar a cada $g_k$ i utilitzant la linealitat de la integral provem el resultat general.
 
         Demostrem ara el primer enunciat. Cal veure que $$\sup_{x\in[a+\delta,b-\delta]}\abs{S_Nf(x)}\overset{N\to\infty}{\longrightarrow}0$$
         Recordem que podem escriure $S_Nf(x)$ com:
