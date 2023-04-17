@@ -22,9 +22,12 @@
 \renewcommand{\O}{\mathrm{O}} % big O-notation
 
 \newtheorem{theorem}{Teorema}
+\newtheorem{exercici}{Exercici}
 \newtheorem{prop}{Proposició}
 \theoremstyle{definition}
 \newtheorem{definition}{Definició}
+\theoremstyle{remark}
+\newtheorem*{res}{Resolució}
 \DeclareDocumentCommand\derivative{ s o m g d() }{ 
   % Total derivative
   % s: star for \flatfrac flat derivative
@@ -64,9 +67,9 @@
 \titleformat{\section}
   {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
 
-\renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
-\renewcommand{\theenumii}{\textbf{\alph{enumii}}}
-\renewcommand{\theenumiii}{\textbf{\roman{enumiii}}}
+% \renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
 
 \renewcommand{\exp}[1]{\mathrm{e}^{#1}} % exponential function
 \DeclareMathOperator*{\im}{Im}
@@ -92,113 +95,124 @@
 \begin{document}
 \selectlanguage{catalan}
 \maketitle
+\begin{exercici}
+  Considerem la sèrie de Fourier d'una funció $f$ en forma complexa $\sum_{k\in\ZZ}\widehat{f}(k)\exp{\ii kt}$. Sigui $\mathcal{A}$ el conjunt de funcions contínues a $[-\pi,\pi]$ amb sèries de Fourier absolutament convergent. Definim $\norm{f}_{\mathcal{A}}=\sum_{k\in\ZZ}\abs{\widehat{f}(k)}$. Demostreu que:
+  \begin{enumerate}
+    \item La hipòtesi de convergència absoluta implica convergència uniforme de la sèrie de Fourier.
+    \item Si $f$ és contínua (amb $f(-\pi)=f(\pi)$) i derivable a trossos amb $f'\in L^2$, llavors $f\in\mathcal{A}$. Doneu també una cota per a $\norm{f}_{\mathcal{A}}$.
+    \item Si $f,g\in\mathcal{A}$, llavors $fg\in\mathcal{A}$ i es compleix $\norm{fg}_{\mathcal{A}}\leq \norm{f}_{\mathcal{A}}\norm{g}_{\mathcal{A}}$.
+  \end{enumerate}
+\end{exercici}
+\begin{res}
+  \hfill
+  \begin{enumerate}
+    \item  Vegem que satisfà la condició M-Weierstra\ss. Tenim que:
+          $$\left|\sum_{n\in\ZZ}\widehat{f}(n)\exp{\ii n t} \right|\leq\sum_{n\in\ZZ}\abs{\widehat{f}(n)}< \infty$$
+          Per tant, tenim convergència uniforme de la sèrie de Fourier.
+    \item Recordant que $\widehat{f'}(n)=\ii n \widehat{f}(n)$ i usant que $ab\leq\frac{1}{2}{\left(a+b\right)}^2$ tenim que:
+          \begin{align*}
+            \sum_{n\in\ZZ}\abs{\widehat{f}(n)} & =\abs{\widehat{f}(0)}+ \sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n}n\abs{\widehat{f}(n)}                                         \\
+                                               & \leq\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\left(\frac{1}{n^2} + n^2\abs{\widehat{f}(n)}^2\right)      \\
+                                               & =\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n^2}+\frac{1}{2}\sum_{n\in\ZZ}\abs{\widehat{f'}(n)}^2 \\
+                                               & =\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n^2}+\frac{1}{4\pi}{\norm{f'}_2}^2                    \\
+                                               & <\infty
+          \end{align*}
+          on hem utilitzat Parseval i el fet que $f'\in L^2$. Una cota de $\norm{f}_\mathcal{A}$ és:
+          $$\norm{f}_\mathcal{A}\leq\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n^2}+\frac{1}{4\pi}{\norm{f'}_2}^2 =\abs{\widehat{f}(0)}+\frac{\pi^2}{6}+\frac{1}{4\pi}{\norm{f'}_2}^2 $$
+    \item Com que tenim convergència absoluta, tenim convergència uniforme per l'apartat a). Cal veure però que aquesta convergència és cap a la funció. Com que $g$ és contínua, tenim que $\displaystyle\lim_{N\to\infty}\norm{S_Ng-g}_1=0$. Per un resultat d'anàlisi funcional tenim que llavors existeix una parcial $(S_{N_k}g)$ que convergeix a $g$ gairebé per tot quan $k\to\infty$. Per tant, podem escriure $g(t)\overset{\mathrm{a.e.}}{=}\sum_{m\in\ZZ}\widehat{g}(m)\exp{\ii m t}$ i llavors per convergència dominada tenim que podem intercanviar la suma amb la integral:
+          $$\widehat{fg}(n)=\frac{1}{2\pi}\int_{-\pi}^\pi f(t)g(t)\exp{-\ii n t}\dd{t}=\sum_{m\in\ZZ}\widehat{g}(m)\int_{-\pi}^\pi f(t)\exp{-\ii (n-m) t}\dd{t}=\sum_{m\in\ZZ}\widehat{g}(m)\widehat{f}(n-m)$$
+          Per tant, reordenant la següent sèrie (ja que és de termes positius) obtenim:
+          $$\sum_{n\in\ZZ}\abs{\widehat{fg}(n)}\leq\sum_{n,m\in\ZZ}\abs{\widehat{g}(m)}\abs{\widehat{f}(n-m)}=\sum_{m\in\ZZ}\abs{\widehat{g}(m)}\sum_{n\in\ZZ}\abs{\widehat{f}(n-m)}=\norm{f}_\mathcal{A}\sum_{m\in\ZZ}\abs{\widehat{g}(m)}=\norm{f}_{\mathcal{A}}\norm{g}_{\mathcal{A}}$$
+  \end{enumerate}
 
-\begin{enumerate}
-  \item \textbf{Considerem la sèrie de Fourier d'una funció $f$ en forma complexa $\sum_{k\in\ZZ}\widehat{f}(k)\exp{\ii kt}$. Sigui $\mathcal{A}$ el conjunt de funcions contínues a $[-\pi,\pi]$ amb sèries de Fourier absolutament convergent. Definim $\norm{f}_{\mathcal{A}}=\sum_{k\in\ZZ}\abs{\widehat{f}(k)}$. Demostreu que:}
-        \begin{enumerate}
-          \item \textbf{La hipòtesi de convergència absoluta implica convergència uniforme de la sèrie de Fourier.}
+\end{res}
+\begin{exercici}
+  Sigui $f$ la funció definida a $[-\pi,\pi]$ per $f(t)=\abs{t}$. Comproveu que:
+  $$\widehat{f}(n)=\begin{cases}
+      \frac{\pi}{2}               & \text{si }n=0    \\
+      \frac{-1+{(-1)}^n}{\pi n^2} & \text{si }n\ne 0
+    \end{cases}$$
+  Utilitzant el desenvolupament en sèrie de Fourier proveu que:
+  $$\sum_{n=0}^\infty\frac{1}{{(2k+1)}^2}=\frac{\pi^2}{8}\qquad\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}$$
+\end{exercici}
+\begin{res}
+  Tenim que:
+  \begin{align*}
+    \widehat{f}(n) & =\frac{1}{2\pi}\int_{-\pi}^{\pi}f(t)\exp{-\ii n t}\dd{t}                                              \\
+                   & =\frac{1}{2\pi}\left[-\int_{-\pi}^{0}t\exp{-\ii n t}\dd{t}+\int_{0}^{\pi}t\exp{-\ii n t}\dd{t}\right] \\
+                   & =\frac{1}{2\pi}\left[\int_{0}^{\pi}t\exp{\ii n t}\dd{t}+\int_{0}^{\pi}t\exp{-\ii n t}\dd{t}\right]    \\
+                   & =\frac{1}{\pi}\int_0^\pi t\cos(n t)\dd{t}                                                             \\
+                   & =\begin{cases}
+                        \frac{\pi}{2}               & \text{si }n=0    \\
+                        \frac{-1+{(-1)}^n}{\pi n^2} & \text{si }n\ne 0
+                      \end{cases}
+  \end{align*}
+  Com que $f$ té límits i derivades laterals en tots els punts de $[-\pi,\pi]$ podem escriure: $$f(t)=\frac{\pi}{2}+\sum_{n=1}^\infty\frac{-1+{(-1)}^n}{\pi n^2}\left[\exp{\ii n t}+\exp{-\ii n t}\right]=\frac{\pi}{2}+\frac{2}{\pi}\sum_{n=1}^\infty\frac{-1+{(-1)}^n}{n^2}\cos(n t)$$
+  Sigui $S_1=\sum_{n=0}^\infty\frac{1}{{(2k+1)}^2}$ i $S_2=\sum_{n=1}^\infty\frac{1}{n^2}$. Fixem-nos que:
+  \begin{equation}\label{ex2}
+    S_2=\sum_{\substack{n\geq 1\\n\text{ senar}}}\frac{1}{n^2}+\sum_{\substack{n\geq 1\\n\text{ parell}}}\frac{1}{n^2}=S_1+\frac{1}{4}S_2\implies S_1=\frac{3}{4}S_2
+  \end{equation}
+  Avaluant a $t=0$, com que $f$ és contínua en aquest punt tenim que:
+  $$0=\frac{\pi}{2}+\frac{2}{\pi}\sum_{n=1}^\infty\frac{-1+{(-1)}^n}{n^2}$$
+  Per tant:
+  $$-\frac{\pi^2}{4}=-S_2+\sum_{n=1}^{\infty}\frac{{(-1)}^n}{n^2}=-S_2-\sum_{\substack{n\geq 1\\n\text{ senar}}}\frac{1}{n^2}+\sum_{\substack{n\geq 1\\n\text{ parell}}}\frac{1}{n^2}=-S_2-S_1+\frac{S_2}{4}=-\frac{3}{2}S_2$$
+  on en l'última igualtat hem usat \eqref{ex2}. D'aquí deduïm que $S_2=\frac{\pi^2}{6}$ i per tant $S_1=\frac{3}{4}S_2=\frac{\pi^2}{8}$.
+\end{res}
+\begin{exercici}
+  Volem provar: Si $f=0$ en $[a,b]\subseteq[-\pi,\pi]$, la seva sèrie de Fourier convergeix uniformement a zero en $[a+\delta,b-\delta]$ per $\delta>0$.
+  Per tal de demostrar aquest resultat, proveu primer la següent adaptació del lema de Riemann-Lebesgue:
 
-                Vegem que satisfà la condició M-Weierstra\ss. Tenim que:
-                $$\left|\sum_{n\in\ZZ}\widehat{f}(n)\exp{\ii n t} \right|\leq\sum_{n\in\ZZ}\abs{\widehat{f}(n)}< \infty$$
-                Per tant, tenim convergència uniforme de la sèrie de Fourier.
-          \item \textbf{Si $f$ és contínua (amb $f(-\pi)=f(\pi)$) i derivable a trossos amb $f'\in L^2$, llavors $f\in\mathcal{A}$. Doneu també una cota per a $\norm{f}_{\mathcal{A}}$.}
+  Si $f$ és $2\pi$-periòdica, integrable i acotada, i $g$ és una funció monòtona a trossos i acotada, llavors:
+  $$\lim_{\lambda\to\infty}\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}=0$$
+  uniformement en $x$.
+\end{exercici}
+\begin{res}
+  Primer suposem que $g$ és monòtona. Com que $f$ és integrable, sabem que $\forall \varepsilon >0$ podem trobar $f_{\varepsilon}=\sum_{k=1}^Mc_{k,\varepsilon}\vf{1}_{[a_{k,\varepsilon},b_{k,\varepsilon}]}$ esglaonada tal que $$\int_{-\pi}^{\pi}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}<\varepsilon$$ Denotem per $\alpha_{k,\varepsilon}:=\max(-\pi,a_{k,\varepsilon}-x)$ i $\beta_{k,\varepsilon}=\min(\pi,b_{k,\varepsilon}-x)$. Llavors:
+  \begin{align*}
+    \abs{\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}} & \leq \int_{-\pi}^{\pi}\abs{(f(x+t)-f_{\varepsilon}(x+t))g(t)\sin(\lambda t)}\dd{t}+\abs{\int_{-\pi}^{\pi}f_{\varepsilon}(x+t)g(t)\sin(\lambda t)\dd{t}}                                                                                                                             \\
+                                                           & \leq \norm{g}_\infty\int_{-\pi-x}^{\pi-x}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{\int_{-\pi}^{\pi}\vf{1}_{[a_{k,\varepsilon},b_{k,\varepsilon}]}(x+t)g(t)\sin(\lambda t)\dd{t}}                                                                 \\
+                                                           & = \norm{g}_\infty\int_{-\pi}^{\pi}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{\int_{\alpha_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}                                                                                       \\
+                                                           & < \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{g({\alpha_{k,\varepsilon}}^+)\int_{\alpha_{k,\varepsilon}}^{\xi_{k,\varepsilon}}\sin(\lambda t)\dd{t}+g({\beta_{k,\varepsilon}}^-)\int_{\xi_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}
+  \end{align*}
+  on $\xi_{k,\varepsilon}\in[{\alpha_{k,\varepsilon}},{\beta_{k,\varepsilon}}]$, pel teorema del valor mitjà per integrals. Finalment tenim que:
+  \begin{align*}
+    \abs{\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}} & < \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{g({\alpha_{k,\varepsilon}}^+)\int_{\alpha_{k,\varepsilon}}^{\xi_{k,\varepsilon}}\sin(\lambda t)\dd{t}+g({\beta_{k,\varepsilon}}^-)\int_{\xi_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}    \\
+                                                           & \leq \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\norm{g}_\infty\left(\frac{\abs{\cos(\lambda \alpha_{k,\varepsilon})-\cos(\lambda\xi_{k,\varepsilon})}}{\lambda}+\frac{\abs{\cos(\lambda \xi_{k,\varepsilon})-\cos(\lambda \beta_{k,\varepsilon})}}{\lambda}\right) \\
+                                                           & \leq \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\norm{g}_\infty\frac{4}{\lambda}
+  \end{align*}
 
-                Recordant que $\widehat{f'}(n)=\ii n \widehat{f}(n)$ i usant que $ab\leq\frac{1}{2}{\left(a+b\right)}^2$ tenim que:
-                \begin{align*}
-                  \sum_{n\in\ZZ}\abs{\widehat{f}(n)} & =\abs{\widehat{f}(0)}+ \sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n}n\abs{\widehat{f}(n)}                                         \\
-                                                     & \leq\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\left(\frac{1}{n^2} + n^2\abs{\widehat{f}(n)}^2\right)      \\
-                                                     & =\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n^2}+\frac{1}{2}\sum_{n\in\ZZ}\abs{\widehat{f'}(n)}^2 \\
-                                                     & =\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n^2}+\frac{1}{4\pi}{\norm{f'}_2}^2                    \\
-                                                     & <\infty
-                \end{align*}
-                on hem utilitzat Parseval i el fet que $f'\in L^2$. Una cota de $\norm{f}_\mathcal{A}$ és:
-                $$\norm{f}_\mathcal{A}\leq\abs{\widehat{f}(0)}+\frac{1}{2}\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n^2}+\frac{1}{4\pi}{\norm{f'}_2}^2 =\abs{\widehat{f}(0)}+\frac{\pi^2}{6}+\frac{1}{4\pi}{\norm{f'}_2}^2 $$
-          \item \textbf{Si $f,g\in\mathcal{A}$, llavors $fg\in\mathcal{A}$ i es compleix $\norm{fg}_{\mathcal{A}}\leq \norm{f}_{\mathcal{A}}\norm{g}_{\mathcal{A}}$.}
+  I triant $\lambda$ tal que tot el segon sumand sigui menor que $\varepsilon$ tenim que això últim és tant petit com vulguem independentment de $x$.
 
-                Com que tenim convergència absoluta, tenim convergència uniforme per l'apartat a). Cal veure però que aquesta convergència és cap a la funció. Com que $g$ és contínua, tenim que $\displaystyle\lim_{N\to\infty}\norm{S_Ng-g}_1=0$. Per un resultat d'anàlisi funcional tenim que llavors existeix una parcial $(S_{N_k}g)$ que convergeix a $g$ gairebé per tot quan $k\to\infty$. Per tant, podem escriure $g(t)\overset{\mathrm{a.e.}}{=}\sum_{m\in\ZZ}\widehat{g}(m)\exp{\ii m t}$ i llavors per convergència dominada tenim que podem intercanviar la suma amb la integral:
-                $$\widehat{fg}(n)=\frac{1}{2\pi}\int_{-\pi}^\pi f(t)g(t)\exp{-\ii n t}\dd{t}=\sum_{m\in\ZZ}\widehat{g}(m)\int_{-\pi}^\pi f(t)\exp{-\ii (n-m) t}\dd{t}=\sum_{m\in\ZZ}\widehat{g}(m)\widehat{f}(n-m)$$
-                Per tant, reordenant la següent sèrie (ja que és de termes positius) obtenim:
-                $$\sum_{n\in\ZZ}\abs{\widehat{fg}(n)}\leq\sum_{n,m\in\ZZ}\abs{\widehat{g}(m)}\abs{\widehat{f}(n-m)}=\sum_{m\in\ZZ}\abs{\widehat{g}(m)}\sum_{n\in\ZZ}\abs{\widehat{f}(n-m)}=\norm{f}_\mathcal{A}\sum_{m\in\ZZ}\abs{\widehat{g}(m)}=\norm{f}_{\mathcal{A}}\norm{g}_{\mathcal{A}}$$
-        \end{enumerate}
+  Si $g$ és monòtona a trossos, aleshores $g(t)=\sum_{k=1}^Ng_k\vf{1}_{[c_k,d_k]}(t)$ amb $g_k:[c_k,d_k]\rightarrow\RR$ monòtona. Llavors, aplicant el que acabem de demostrar a cada $g_k$ i utilitzant la linealitat de la integral provem el resultat general.
 
-  \item \textbf{Sigui $f$ la funció definida a $[-\pi,\pi]$ per $f(t)=\abs{t}$. Comproveu que:} $$\widehat{f}(n)=\begin{cases}
-            \frac{\pi}{2}               & \text{si }n=0    \\
-            \frac{-1+{(-1)}^n}{\pi n^2} & \text{si }n\ne 0
-          \end{cases}$$
-        \textbf{Utilitzant el desenvolupament en sèrie de Fourier proveu que:}
-        $$\sum_{n=0}^\infty\frac{1}{{(2k+1)}^2}=\frac{\pi^2}{8}\qquad\sum_{n=1}^\infty\frac{1}{n^2}=\frac{\pi^2}{6}$$
-        Tenim que:
-        \begin{align*}
-          \widehat{f}(n) & =\frac{1}{2\pi}\int_{-\pi}^{\pi}f(t)\exp{-\ii n t}\dd{t}                                              \\
-                         & =\frac{1}{2\pi}\left[-\int_{-\pi}^{0}t\exp{-\ii n t}\dd{t}+\int_{0}^{\pi}t\exp{-\ii n t}\dd{t}\right] \\
-                         & =\frac{1}{2\pi}\left[\int_{0}^{\pi}t\exp{\ii n t}\dd{t}+\int_{0}^{\pi}t\exp{-\ii n t}\dd{t}\right]    \\
-                         & =\frac{1}{\pi}\int_0^\pi t\cos(n t)\dd{t}                                                             \\
-                         & =\begin{cases}
-                              \frac{\pi}{2}               & \text{si }n=0    \\
-                              \frac{-1+{(-1)}^n}{\pi n^2} & \text{si }n\ne 0
-                            \end{cases}
-        \end{align*}
-        Com que $f$ té límits i derivades laterals en tots els punts de $[-\pi,\pi]$ podem escriure: $$f(t)=\frac{\pi}{2}+\sum_{n=1}^\infty\frac{-1+{(-1)}^n}{\pi n^2}\left[\exp{\ii n t}+\exp{-\ii n t}\right]=\frac{\pi}{2}+\frac{2}{\pi}\sum_{n=1}^\infty\frac{-1+{(-1)}^n}{n^2}\cos(n t)$$
-        Sigui $S_1=\sum_{n=0}^\infty\frac{1}{{(2k+1)}^2}$ i $S_2=\sum_{n=1}^\infty\frac{1}{n^2}$. Fixem-nos que:
-        \begin{equation}\label{ex2}
-          S_2=\sum_{\substack{n\geq 1\\n\text{ senar}}}\frac{1}{n^2}+\sum_{\substack{n\geq 1\\n\text{ parell}}}\frac{1}{n^2}=S_1+\frac{1}{4}S_2\implies S_1=\frac{3}{4}S_2
-        \end{equation}
-        Avaluant a $t=0$, com que $f$ és contínua en aquest punt tenim que:
-        $$0=\frac{\pi}{2}+\frac{2}{\pi}\sum_{n=1}^\infty\frac{-1+{(-1)}^n}{n^2}$$
-        Per tant:
-        $$-\frac{\pi^2}{4}=-S_2+\sum_{n=1}^{\infty}\frac{{(-1)}^n}{n^2}=-S_2-\sum_{\substack{n\geq 1\\n\text{ senar}}}\frac{1}{n^2}+\sum_{\substack{n\geq 1\\n\text{ parell}}}\frac{1}{n^2}=-S_2-S_1+\frac{S_2}{4}=-\frac{3}{2}S_2$$
-        on en l'última igualtat hem usat \eqref{ex2}. D'aquí deduïm que $S_2=\frac{\pi^2}{6}$ i per tant $S_1=\frac{3}{4}S_2=\frac{\pi^2}{8}$.
-        \item\textbf{Volem provar: \textit{Si $f=0$ en $[a,b]\subseteq[-\pi,\pi]$, la seva sèrie de Fourier convergeix uniformement a zero en $[a+\delta,b-\delta]$ per $\delta>0$.}}
-
-        \textbf{Per tal de demostrar aquest resultat, proveu primer la següent adaptació del lema de Riemann-Lebesgue:}
-
-        \textbf{\textit{Si $f$ és $2\pi$-periòdica, integrable i acotada, i $g$ és una funció monòtona a trossos i acotada, llavors:}}
-
-        $$\lim_{\lambda\to\infty}\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}=0$$
-        \textbf{\textit{uniformement en $x$.}}
-
-        Primer suposem que $g$ és monòtona. Com que $f$ és integrable, sabem que $\forall \varepsilon >0$ podem trobar $f_{\varepsilon}=\sum_{k=1}^Mc_{k,\varepsilon}\vf{1}_{[a_{k,\varepsilon},b_{k,\varepsilon}]}$ esglaonada tal que $$\int_{-\pi}^{\pi}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}<\varepsilon$$ Denotem per $\alpha_{k,\varepsilon}:=\max(-\pi,a_{k,\varepsilon}-x)$ i $\beta_{k,\varepsilon}=\min(\pi,b_{k,\varepsilon}-x)$. Llavors:
-        \begin{align*}
-          \abs{\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}} & \leq \int_{-\pi}^{\pi}\abs{(f(x+t)-f_{\varepsilon}(x+t))g(t)\sin(\lambda t)}\dd{t}+\abs{\int_{-\pi}^{\pi}f_{\varepsilon}(x+t)g(t)\sin(\lambda t)\dd{t}}                                                                                                                             \\
-                                                                 & \leq \norm{g}_\infty\int_{-\pi-x}^{\pi-x}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{\int_{-\pi}^{\pi}\vf{1}_{[a_{k,\varepsilon},b_{k,\varepsilon}]}(x+t)g(t)\sin(\lambda t)\dd{t}}                                                                 \\
-                                                                 & = \norm{g}_\infty\int_{-\pi}^{\pi}\abs{f(t)-f_{\varepsilon}(t)}\dd{t}+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{\int_{\alpha_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}                                                                                       \\
-                                                                 & < \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{g({\alpha_{k,\varepsilon}}^+)\int_{\alpha_{k,\varepsilon}}^{\xi_{k,\varepsilon}}\sin(\lambda t)\dd{t}+g({\beta_{k,\varepsilon}}^-)\int_{\xi_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}
-        \end{align*}
-        on $\xi_{k,\varepsilon}\in[{\alpha_{k,\varepsilon}},{\beta_{k,\varepsilon}}]$, pel teorema del valor mitjà per integrals. Finalment tenim que:
-        \begin{align*}
-          \abs{\int_{-\pi}^{\pi}f(x+t)g(t)\sin(\lambda t)\dd{t}} & < \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\abs{g({\alpha_{k,\varepsilon}}^+)\int_{\alpha_{k,\varepsilon}}^{\xi_{k,\varepsilon}}\sin(\lambda t)\dd{t}+g({\beta_{k,\varepsilon}}^-)\int_{\xi_{k,\varepsilon}}^{\beta_{k,\varepsilon}}g(t)\sin(\lambda t)\dd{t}}    \\
-                                                                 & \leq \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\norm{g}_\infty\left(\frac{\abs{\cos(\lambda \alpha_{k,\varepsilon})-\cos(\lambda\xi_{k,\varepsilon})}}{\lambda}+\frac{\abs{\cos(\lambda \xi_{k,\varepsilon})-\cos(\lambda \beta_{k,\varepsilon})}}{\lambda}\right) \\
-                                                                 & \leq \norm{g}_\infty\varepsilon+\sum_{k=1}^M\abs{c_{k,\varepsilon}}\norm{g}_\infty\frac{4}{\lambda}
-        \end{align*}
-
-        I triant $\lambda$ tal que tot el segon sumand sigui menor que $\varepsilon$ tenim que això últim és tant petit com vulguem independentment de $x$.
-
-        Si $g$ és monòtona a trossos, aleshores $g(t)=\sum_{k=1}^Ng_k\vf{1}_{[c_k,d_k]}(t)$ amb $g_k:[c_k,d_k]\rightarrow\RR$ monòtona. Llavors, aplicant el que acabem de demostrar a cada $g_k$ i utilitzant la linealitat de la integral provem el resultat general.
-
-        Demostrem ara el primer enunciat. Cal veure que $$\sup_{x\in[a+\delta,b-\delta]}\abs{S_Nf(x)}\overset{N\to\infty}{\longrightarrow}0$$
-        Recordem que podem escriure $S_Nf(x)$ com:
-        $$S_Nf(x)=\int_{-\pi}^\pi f(x+t)D_N(t)\dd{t}=\int_{-\pi}^\pi f(x+t)\frac{1}{\sin(t/2)}\sin((N+1/2)t)\dd{t}$$
-        Fixem-nos que gairebé estem en les hipòtesis de poder aplicar el lema generalitzat de Riemann-Lebesgue, però d'entrada $\frac{1}{\sin(t/2)}$ no està acotat en un entorn del 0. Ara bé, notem que:
-        $$x+t\in [a,b]\iff a\leq x+t\leq b\iff a-(b-\delta)\leq t\leq b-(a+\delta)\iff -(b-a)+\delta\leq t\leq(b-a)-\delta$$
-        Per tant, quan $f(x+t)=0$, la $t$ està en un interval que conté el 0 (per a $0<\delta<\frac{b-a}{2}$, que és fins on deixa de tenir sentit l'interval $[a+\delta,b-\delta]$) i per tant, considerant la funció acotada $$g(t)=\frac{1}{\sin(t/2)}(1-\vf{1}_{[-(b-a)+\delta,(b-a)-\delta]}(t))+C\vf{1}_{[-(b-a)+\delta,(b-a)-\delta]}(t)$$
-        tenim que
-        $$S_Nf(x)=\int_{-\pi}^\pi f(x+t)\frac{1}{\sin(t/2)}\sin((N+1/2)t)\dd{t}=\int_{-\pi}^\pi f(x+t)g(t)\sin((N+1/2)t)\dd{t}$$
-        per a qualsevol $C\in\RR^*$ i podem aplicar el lema anterior per demostrar la convergència uniforme.
-  \item \textbf{Comproveu que per $\alpha\in\RR\setminus\ZZ$, la sèrie de Fourier de $\displaystyle\frac{\pi}{\sin(\pi\alpha)}\exp{\ii(\pi-x)\alpha}$ a $[0,2\pi]$ ve donada per $\sum_{n\in\ZZ}\frac{\exp{\ii nx}}{n+\alpha}$. Utilitzeu la identitat de Parseval per demsotrar que:}
-        $$\sum_{n\in\ZZ}\frac{1}{{(n+\alpha)}^2}=\frac{\pi^2}{{(\sin(\pi\alpha))}^2}$$
-        Tenim que:
-        \begin{align*}
-          \widehat{f}(n) & =\frac{1}{2\pi}\int_{0}^{2\pi}f(t)\exp{-\ii n t}\dd{t}                                               \\
-                         & =\frac{1}{2\pi}\int_{0}^{2\pi}\frac{\pi}{\sin(\pi\alpha)}\exp{\ii (\pi-t)\alpha}\exp{-\ii n t}\dd{t} \\
-                         & =\frac{1}{2\sin(\pi\alpha)}\exp{\ii\pi\alpha}\int_{0}^{2\pi}\exp{-\ii (n+\alpha) t}\dd{t}            \\
-                         & =\frac{1}{2\sin(\pi\alpha)}\exp{\ii\pi\alpha}\frac{\exp{-2\pi\ii(n+\alpha)}-1}{-\ii(n+\alpha)}       \\
-                         & =\frac{1}{\sin(\pi\alpha)}\exp{\ii\pi\alpha}\frac{1-\exp{-2\pi\ii\alpha}}{2\ii(n+\alpha)}            \\
-                         & =\frac{1}{\sin(\pi\alpha)}\frac{\sin(\pi\alpha)}{n+\alpha}                                           \\
-                         & =\frac{1}{n+\alpha}                                                                                  \\
-        \end{align*}
-        Utilitzant identitat de Parseval tenim que:
-        $$\sum_{n\in\ZZ}\frac{1}{{(n+\alpha)}^2}=\frac{1}{2\pi}{\norm{f}_2}^2$$
-        Ara bé: $$\frac{1}{2\pi}{\norm{f}_2}^2=\frac{1}{2\pi}\int_0^{2\pi}\abs{f(x)}^2\dd{x}=\frac{1}{2\pi}\int_0^{2\pi}\frac{\pi^2}{{(\sin(\pi\alpha))}^2}\dd{x}=\frac{\pi^2}{{(\sin(\pi\alpha))}^2}$$
-\end{enumerate}
+  Demostrem ara el primer enunciat. Cal veure que $$\sup_{x\in[a+\delta,b-\delta]}\abs{S_Nf(x)}\overset{N\to\infty}{\longrightarrow}0$$
+  Recordem que podem escriure $S_Nf(x)$ com:
+  $$S_Nf(x)=\int_{-\pi}^\pi f(x+t)D_N(t)\dd{t}=\int_{-\pi}^\pi f(x+t)\frac{1}{\sin(t/2)}\sin((N+1/2)t)\dd{t}$$
+  Fixem-nos que gairebé estem en les hipòtesis de poder aplicar el lema generalitzat de Riemann-Lebesgue, però d'entrada $\frac{1}{\sin(t/2)}$ no està acotat en un entorn del 0. Ara bé, notem que:
+  $$x+t\in [a,b]\iff a\leq x+t\leq b\iff a-(b-\delta)\leq t\leq b-(a+\delta)\iff -(b-a)+\delta\leq t\leq(b-a)-\delta$$
+  Per tant, quan $f(x+t)=0$, la $t$ està en un interval que conté el 0 (per a $0<\delta<\frac{b-a}{2}$, que és fins on deixa de tenir sentit l'interval $[a+\delta,b-\delta]$) i per tant, considerant la funció acotada $$g(t)=\frac{1}{\sin(t/2)}(1-\vf{1}_{[-(b-a)+\delta,(b-a)-\delta]}(t))+C\vf{1}_{[-(b-a)+\delta,(b-a)-\delta]}(t)$$
+  tenim que
+  $$S_Nf(x)=\int_{-\pi}^\pi f(x+t)\frac{1}{\sin(t/2)}\sin((N+1/2)t)\dd{t}=\int_{-\pi}^\pi f(x+t)g(t)\sin((N+1/2)t)\dd{t}$$
+  per a qualsevol $C\in\RR^*$ i podem aplicar el lema anterior per demostrar la convergència uniforme.
+\end{res}
+\begin{exercici}
+  Comproveu que per $\alpha\in\RR\setminus\ZZ$, la sèrie de Fourier de $\displaystyle\frac{\pi}{\sin(\pi\alpha)}\exp{\ii(\pi-x)\alpha}$ a $[0,2\pi]$ ve donada per $\sum_{n\in\ZZ}\frac{\exp{\ii nx}}{n+\alpha}$. Utilitzeu la identitat de Parseval per demsotrar que:
+  $$\sum_{n\in\ZZ}\frac{1}{{(n+\alpha)}^2}=\frac{\pi^2}{{(\sin(\pi\alpha))}^2}$$
+\end{exercici}
+\begin{res}
+  Tenim que:
+  \begin{align*}
+    \widehat{f}(n) & =\frac{1}{2\pi}\int_{0}^{2\pi}f(t)\exp{-\ii n t}\dd{t}                                               \\
+                   & =\frac{1}{2\pi}\int_{0}^{2\pi}\frac{\pi}{\sin(\pi\alpha)}\exp{\ii (\pi-t)\alpha}\exp{-\ii n t}\dd{t} \\
+                   & =\frac{1}{2\sin(\pi\alpha)}\exp{\ii\pi\alpha}\int_{0}^{2\pi}\exp{-\ii (n+\alpha) t}\dd{t}            \\
+                   & =\frac{1}{2\sin(\pi\alpha)}\exp{\ii\pi\alpha}\frac{\exp{-2\pi\ii(n+\alpha)}-1}{-\ii(n+\alpha)}       \\
+                   & =\frac{1}{\sin(\pi\alpha)}\exp{\ii\pi\alpha}\frac{1-\exp{-2\pi\ii\alpha}}{2\ii(n+\alpha)}            \\
+                   & =\frac{1}{\sin(\pi\alpha)}\frac{\sin(\pi\alpha)}{n+\alpha}                                           \\
+                   & =\frac{1}{n+\alpha}                                                                                  \\
+  \end{align*}
+  Utilitzant identitat de Parseval tenim que:
+  $$\sum_{n\in\ZZ}\frac{1}{{(n+\alpha)}^2}=\frac{1}{2\pi}{\norm{f}_2}^2$$
+  Ara bé: $$\frac{1}{2\pi}{\norm{f}_2}^2=\frac{1}{2\pi}\int_0^{2\pi}\abs{f(x)}^2\dd{x}=\frac{1}{2\pi}\int_0^{2\pi}\frac{\pi^2}{{(\sin(\pi\alpha))}^2}\dd{x}=\frac{\pi^2}{{(\sin(\pi\alpha))}^2}$$
+\end{res}
 
 \end{document}

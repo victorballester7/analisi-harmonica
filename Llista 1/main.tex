@@ -21,9 +21,12 @@
 \renewcommand{\O}{\mathrm{O}} % big O-notation
 
 \newtheorem{theorem}{Teorema}
+\newtheorem{exercici}{Exercici}
 \newtheorem{prop}{Proposició}
 \theoremstyle{definition}
 \newtheorem{definition}{Definició}
+\theoremstyle{remark}
+\newtheorem*{res}{Resolució}
 \DeclareDocumentCommand\derivative{ s o m g d() }{ 
   % Total derivative
   % s: star for \flatfrac flat derivative
@@ -63,10 +66,9 @@
 \titleformat{\section}
   {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
 
-\renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
-\renewcommand{\theenumii}{\textbf{\alph{enumii}}}
-\renewcommand{\theenumiii}{\textbf{\roman{enumiii}}}
-
+% \renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
 \renewcommand{\exp}[1]{\mathrm{e}^{#1}} % exponential function
 \DeclareMathOperator*{\im}{Im}
 
@@ -91,117 +93,125 @@
 \begin{document}
 \selectlanguage{catalan}
 \maketitle
+\begin{exercici}
+  Escriviu les sèries de Fourier de sinus i de cosinus de la funció
+  \begin{equation*}
+    f(x)=\begin{cases}
+      \frac{\pi}{3}  & \text{si } x\in(0,\pi/3)      \\
+      0              & \text{si } x\in(\pi/3,2\pi/3) \\
+      -\frac{\pi}{3} & \text{si } x\in(2\pi/3,\pi)
+    \end{cases}
+  \end{equation*}
+\end{exercici}
+\begin{res}
+  Per calcular la del sinus, fem l'extensió senar de $f$ en $[-\pi,\pi]$ i llavors sabem que la seva sèrie de Fourier és $$S_1f(x)=\sum_{k=1}^{\infty}b_k\sin(kx)$$ on $b_k=\frac{2}{\pi}\int_0^\pi f(x)\sin(kx)$. Tenim que:
 
-\begin{enumerate}
-  \item \textbf{Escriviu les sèries de Fourier de sinus i de cosinus de la funció}
-        \begin{equation*}
-          f(x)=\begin{cases}
-            \frac{\pi}{3}  & \text{si } x\in(0,\pi/3)      \\
-            0              & \text{si } x\in(\pi/3,2\pi/3) \\
-            -\frac{\pi}{3} & \text{si } x\in(2\pi/3,\pi)
-          \end{cases}
-        \end{equation*}
+  \begin{align*}
+    b_k & =\frac{2}{\pi}\int_0^{\frac{\pi}{3}} \frac{\pi}{3}\sin(kx)-\frac{2}{\pi}\int_{\frac{2\pi}{3}}^{\pi} \frac{\pi}{3}\sin(kx) \\
+        & =\frac{2}{3}\frac{1+{(-1)}^k-\cos(k\pi/3)-\cos(2k\pi/3)}{k}                                                               \\
+        & =\frac{2}{3}\frac{1+{(-1)}^k-2\cos(k\pi/2)\cos(k\pi/6)}{k}                                                                \\
+        & =\begin{cases}
+             0                                & \text{si $k$ és senar}  \\
+             0                                & \text{si $k=6\ell$}     \\
+             \displaystyle\frac{1}{3\ell + 1} & \text{si $k=6\ell + 2$} \\
+             \displaystyle\frac{1}{3\ell + 2} & \text{si $k=6\ell + 4$}
+           \end{cases}
+  \end{align*}
+  on hem usat la identitat trigonomètrica $\cos a+\cos b=2\cos\left(\frac{a+b}{2}\right)\cos\left(\frac{a-b}{2}\right)$. Així doncs: $$S_1f(x)=\sum_{\ell = 0}^\infty\left(\frac{\sin((6\ell + 2)x)}{3\ell + 1} + \frac{\sin((6\ell + 4)x)}{3\ell + 2} \right)$$
 
-        Per calcular la del sinus, fem l'extensió senar de $f$ en $[-\pi,\pi]$ i llavors sabem que la seva sèrie de Fourier és $$S_1f(x)=\sum_{k=1}^{\infty}b_k\sin(kx)$$ on $b_k=\frac{2}{\pi}\int_0^\pi f(x)\sin(kx)$. Tenim que:
+  Si ara fem l'extensió parell de $f$ en $[-\pi,\pi]$ obtenim la seva sèrie de Fourier en termes del cosinus:
+  \begin{equation}\label{cosinus}
+    S_2f(x)=\frac{a_0}{2}+\sum_{k=1}^{\infty}a_k\cos(kx)
+  \end{equation}
+  on $a_k=\frac{2}{\pi}\int_0^\pi f(x)\cos(kx)$.
+  Tenim que:
 
-        \begin{align*}
-          b_k & =\frac{2}{\pi}\int_0^{\frac{\pi}{3}} \frac{\pi}{3}\sin(kx)-\frac{2}{\pi}\int_{\frac{2\pi}{3}}^{\pi} \frac{\pi}{3}\sin(kx) \\
-              & =\frac{2}{3}\frac{1+{(-1)}^k-\cos(k\pi/3)-\cos(2k\pi/3)}{k}                                                               \\
-              & =\frac{2}{3}\frac{1+{(-1)}^k-2\cos(k\pi/2)\cos(k\pi/6)}{k}                                                                \\
-              & =\begin{cases}
-                   0                                & \text{si $k$ és senar}  \\
-                   0                                & \text{si $k=6\ell$}     \\
-                   \displaystyle\frac{1}{3\ell + 1} & \text{si $k=6\ell + 2$} \\
-                   \displaystyle\frac{1}{3\ell + 2} & \text{si $k=6\ell + 4$}
-                 \end{cases}
-        \end{align*}
-        on hem usat la identitat trigonomètrica $\cos a+\cos b=2\cos\left(\frac{a+b}{2}\right)\cos\left(\frac{a-b}{2}\right)$. Així doncs: $$S_1f(x)=\sum_{\ell = 0}^\infty\left(\frac{\sin((6\ell + 2)x)}{3\ell + 1} + \frac{\sin((6\ell + 4)x)}{3\ell + 2} \right)$$
+  \begin{align*}
+    a_k & =\frac{2}{\pi}\int_0^{\frac{\pi}{3}} \frac{\pi}{3}\cos(kx)-\frac{2}{\pi}\int_{\frac{2\pi}{3}}^{\pi} \frac{\pi}{3}\cos(kx) \\
+        & =\begin{cases}
+             \frac{2}{3}\frac{\sin(k\pi/3)+\sin(2k\pi/3)}{k} & \text{si $k\ne 0$} \\
+             0                                               & \text{si $k=0$}
+           \end{cases}                                                     \\
+        & =\begin{cases}
+             \frac{4}{3}\frac{\sin(k\pi/2)\cos(k\pi/6)}{k} & \text{si $k\ne 0$} \\
+             0                                             & \text{si $k=0$}
+           \end{cases}                                                       \\
+        & =\begin{cases}
+             0                                          & \text{si $k$ és parell} \\
+             \displaystyle\frac{2\sqrt{3}}{3(6\ell +1)} & \text{si $k=6\ell+1$}   \\
+             0                                          & \text{si $k=6\ell + 3$} \\
+             \displaystyle-\frac{2\sqrt{3}}{3(6\ell+5)} & \text{si $k=6\ell + 5$}
+           \end{cases}
+  \end{align*}
+  on hem usat la identitat trigonomètrica $\sin a+\sin b=2\sin\left(\frac{a+b}{2}\right)\cos\left(\frac{a-b}{2}\right)$.
+  Així doncs:
+  $$S_2f(x)=\frac{2\sqrt{3}}{3}\sum_{\ell = 0}^\infty\left(\frac{\cos((6\ell + 1)x)}{6\ell + 1} - \frac{\cos((6\ell + 5)x)}{6\ell + 5}\right)$$
+\end{res}
+\begin{exercici}
+  Sigui $f \in\mathcal{C}^k$ una funció $2\pi$-periòdica. Demostreu que $\widehat{f}(n)=\O(\abs{n}^{-k})$ quan $\abs{n}\to\infty$ (i.e. existeix una constant $C > 0$ tal que $\abs{\widehat{f}(n)}\leq C\abs{n}^{-k}$).
+\end{exercici}
+\begin{res}
+  Demostrem per inducció sobre $k$ que $$\widehat{f^{(k)}}(n)={(\ii n)}^k\widehat{f}(n)$$
+  El cas $k=0$ és directe. Si suposem cert el cas $k-1$ tenim que:
+  \begin{align*}
+    \widehat{f^{(k)}}(n) & =\left\langle f^{(k)}(x),\frac{1}{2\pi}\exp{\ii nx}\right\rangle                                                               \\
+                         & =\frac{1}{2\pi}\int_{-\pi}^\pi f^{(k)}(x)\exp{-\ii n x}\dd{x}                                                                  \\
+                         & =\frac{1}{2\pi}f^{(k-1)}(x)\exp{-\ii n x}\Big|_{-\pi}^\pi + \frac{\ii n}{2\pi}\int_{-\pi}^\pi f^{(k-1)}(x)\exp{-\ii n x}\dd{x} \\
+                         & =\ii n \widehat{f^{(k-1)}}(n)                                                                                                  \\
+                         & ={(\ii n)}^k\widehat{f}(n)
+  \end{align*}
+  on hem fet integració per parts i hem fet servir la continuïtat de $f^{(k-1)}$ en els punts ``d'unió"\ ($f^{(k-1)}(-\pi)=f^{(k-1)}(\pi)$) i la hipòtesi d'inducció en l'última igualtat.
+  Per tant, com que sempre tenim que $$\abs{\widehat{g}(n)}\leq\frac{1}{2\pi}\norm{g}_1$$ i $\norm{f^{(k)}}_1=C<\infty$ perquè $f^{(k)}$ és contínua, deduïm que:
+  $$\abs{\widehat{f}(n)}=\abs{\frac{\widehat{f^{(k)}}(n)}{{(\ii n)}^k}}\leq C\abs{n}^{-k}$$
+\end{res}
+\begin{exercici}
+  A l'interval $[-\pi, \pi]$ considereu la funció
+  \begin{equation*}
+    f(t)=\begin{cases}
 
-        Si ara fem l'extensió parell de $f$ en $[-\pi,\pi]$ obtenim la seva sèrie de Fourier en termes del cosinus:
-        \begin{equation}\label{cosinus}
-          S_2f(x)=\frac{a_0}{2}+\sum_{k=1}^{\infty}a_k\cos(kx)
-        \end{equation}
-        on $a_k=\frac{2}{\pi}\int_0^\pi f(x)\cos(kx)$.
-        Tenim que:
-
-        \begin{align*}
-          a_k & =\frac{2}{\pi}\int_0^{\frac{\pi}{3}} \frac{\pi}{3}\cos(kx)-\frac{2}{\pi}\int_{\frac{2\pi}{3}}^{\pi} \frac{\pi}{3}\cos(kx) \\
-              & =\begin{cases}
-                   \frac{2}{3}\frac{\sin(k\pi/3)+\sin(2k\pi/3)}{k} & \text{si $k\ne 0$} \\
-                   0                                               & \text{si $k=0$}
-                 \end{cases}                                                     \\
-              & =\begin{cases}
-                   \frac{4}{3}\frac{\sin(k\pi/2)\cos(k\pi/6)}{k} & \text{si $k\ne 0$} \\
-                   0                                             & \text{si $k=0$}
-                 \end{cases}                                                       \\
-              & =\begin{cases}
-                   0                                          & \text{si $k$ és parell} \\
-                   \displaystyle\frac{2\sqrt{3}}{3(6\ell +1)} & \text{si $k=6\ell+1$}   \\
-                   0                                          & \text{si $k=6\ell + 3$} \\
-                   \displaystyle-\frac{2\sqrt{3}}{3(6\ell+5)} & \text{si $k=6\ell + 5$}
-                 \end{cases}
-        \end{align*}
-        on hem usat la identitat trigonomètrica $\sin a+\sin b=2\sin\left(\frac{a+b}{2}\right)\cos\left(\frac{a-b}{2}\right)$.
-        Així doncs:
-        $$S_2f(x)=\frac{2\sqrt{3}}{3}\sum_{\ell = 0}^\infty\left(\frac{\cos((6\ell + 1)x)}{6\ell + 1} - \frac{\cos((6\ell + 5)x)}{6\ell + 5}\right)$$
-  \item \textbf{Sigui $f \in\mathcal{C}^k$ una funció $2\pi$-periòdica. Demostreu que $\widehat{f}(n)=\O(\abs{n}^{-k})$ quan $\abs{n}\to\infty$ (i.e. existeix una constant $C > 0$ tal que $\abs{\widehat{f}(n)}\leq C\abs{n}^{-k}$).}
-
-        Demostrem per inducció sobre $k$ que $$\widehat{f^{(k)}}(n)={(\ii n)}^k\widehat{f}(n)$$
-        El cas $k=0$ és directe. Si suposem cert el cas $k-1$ tenim que:
-        \begin{align*}
-          \widehat{f^{(k)}}(n) & =\left\langle f^{(k)}(x),\frac{1}{2\pi}\exp{\ii nx}\right\rangle                                                               \\
-                               & =\frac{1}{2\pi}\int_{-\pi}^\pi f^{(k)}(x)\exp{-\ii n x}\dd{x}                                                                  \\
-                               & =\frac{1}{2\pi}f^{(k-1)}(x)\exp{-\ii n x}\Big|_{-\pi}^\pi + \frac{\ii n}{2\pi}\int_{-\pi}^\pi f^{(k-1)}(x)\exp{-\ii n x}\dd{x} \\
-                               & =\ii n \widehat{f^{(k-1)}}(n)                                                                                                  \\
-                               & ={(\ii n)}^k\widehat{f}(n)
-        \end{align*}
-        on hem fet integració per parts i hem fet servir la continuïtat de $f^{(k-1)}$ en els punts ``d'unió"\ ($f^{(k-1)}(-\pi)=f^{(k-1)}(\pi)$) i la hipòtesi d'inducció en l'última igualtat.
-        Per tant, com que sempre tenim que $$\abs{\widehat{g}(n)}\leq\frac{1}{2\pi}\norm{g}_1$$ i $\norm{f^{(k)}}_1=C<\infty$ perquè $f^{(k)}$ és contínua, deduïm que:
-        $$\abs{\widehat{f}(n)}=\abs{\frac{\widehat{f^{(k)}}(n)}{{(\ii n)}^k}}\leq C\abs{n}^{-k}$$
-        \item\textbf{A l'interval $[-\pi, \pi]$ considereu la funció}
-        \begin{equation*}
-          f(t)=\begin{cases}
-
-            0                        & \text{si } \abs{t}>\delta    \\
-            1-\frac{\abs{t}}{\delta} & \text{si } \abs{t}\leq\delta
-          \end{cases}
-        \end{equation*}
-        \textbf{Demostreu que $$f(t)=\frac{\delta}{2\pi}+2\sum_{n=1}^\infty\frac{1-\cos(n\delta)}{n^2\pi\delta}\cos(nt)$$}
-
-        La funció $f(t)$ és parella, per tant la seva sèrie de Fourier només tindrà els termes del cosinus. Aquests són els següents:
-        \begin{align*}
-          a_n & =\frac{2}{\pi}\int_0^\pi f(t)\cos(nt)\dd{t}                                \\
-              & =\frac{2}{\pi}\int_0^\delta \left(1-\frac{t}{\delta}\right)\cos(nt)\dd{t}  \\
-              & =\begin{cases}
-                   \displaystyle 2\frac{1-\cos(n\delta)}{\pi n^2\delta} & \text{si $n\ne 0$} \\
-                   \frac{\delta}{\pi}                                   & \text{si $n=0$}
-                 \end{cases}
-        \end{align*}
-        D'aquí (i recordant l'expressió \eqref{cosinus}) es desprèn automàticament el resultat ja que $f$ és contínua i derivable excepte a un nombre finit de punts i la derivada està acotada. De fet, per aquest motiu la convergència de $Sf$ a $f$ és uniforme.
-  \item \textbf{Proveu que els coeficients de Fourier es poden escriure com $$a_k=\frac{1}{2\pi}\int_{-\pi}^\pi\left[f(x)-f\left(x-\frac{\pi}{k}\right)\right]\cos(kx)\dd{x}\qquad b_k=\frac{1}{2\pi}\int_{-\pi}^\pi\left[f(x)-f\left(x-\frac{\pi}{k}\right)\right]\sin(kx)\dd{x}$$
-          Deduïu que si $f$ satisfà una condició Hölder d'ordre $\alpha$, i.e. $\abs{f(x)-f(y)}\leq L\abs{x-y}^\alpha$, llavors els coeficients de Fourier satisfan $$\abs{a_k}\leq L\frac{\pi^\alpha}{k^\alpha}\qquad\abs{b_k}\leq L\frac{\pi^\alpha}{k^\alpha}$$}
-
-        Per demostrar les igualtats és suficient veure que $$a_k=-\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\cos(kx)\dd{x}\qquad b_k=-\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\sin(kx)\dd{x}$$
-        Fent el canvi $y=x-\frac{\pi}{k}$ tenim que:
-        \begin{align*}
-          -\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\cos(kx)\dd{x} & = -\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\cos(ky+\pi)\dd{y} \\
-                                                                                    & =\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\cos(ky)\dd{y}       \\
-                                                                                    & =\frac{1}{\pi}\int_{-\pi}^{\pi} f(y)\cos(ky)\dd{y}                                   \\
-                                                                                    & =a_k
-        \end{align*}
-        La penúltima igualtat es deu al fet que si $g$ és $T$-periòdica i integrable, aleshores $\forall x\in\RR$ tenim $$\int_x^{x+T}g(x)\dd{x}=\int_0^{T}g(x)\dd{x}$$
-        Similarment:
-        \begin{align*}
-          -\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\sin(kx)\dd{x} & = -\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\sin(ky+\pi)\dd{y} \\
-                                                                                    & =\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\sin(ky)\dd{y}       \\
-                                                                                    & =\frac{1}{\pi}\int_{-\pi}^{\pi} f(y)\sin(ky)\dd{y}                                   \\
-                                                                                    & =b_k
-        \end{align*}
-        A partir d'aquestes igualtats si $f$ satisfà la condició de Hölder tenim:
-        \begin{align*}
-          \abs{a_k} & \leq\frac{1}{2\pi}\int_{-\pi}^\pi\abs{\left[f(x)-f\left(x-\frac{x}{k}\right)\right]\cos(kx)}\dd{x}\leq \frac{L}{2\pi}\int_{-\pi}^\pi\frac{\abs{\pi}^\alpha}{k^\alpha}\dd{x}= L\frac{\pi^\alpha}{k^\alpha} \\
-          \abs{b_k} & \leq\frac{1}{2\pi}\int_{-\pi}^\pi\abs{\left[f(x)-f\left(x-\frac{x}{k}\right)\right]\sin(kx)}\dd{x}\leq \frac{L}{2\pi}\int_{-\pi}^\pi\frac{\abs{\pi}^\alpha}{k^\alpha}\dd{x}=L\frac{\pi^\alpha}{k^\alpha}  \\
-        \end{align*}
-\end{enumerate}
-
+      0                        & \text{si } \abs{t}>\delta    \\
+      1-\frac{\abs{t}}{\delta} & \text{si } \abs{t}\leq\delta
+    \end{cases}
+  \end{equation*}
+  Demostreu que $$f(t)=\frac{\delta}{2\pi}+2\sum_{n=1}^\infty\frac{1-\cos(n\delta)}{n^2\pi\delta}\cos(nt)$$
+\end{exercici}
+\begin{res}
+  La funció $f(t)$ és parella, per tant la seva sèrie de Fourier només tindrà els termes del cosinus. Aquests són els següents:
+  \begin{align*}
+    a_n & =\frac{2}{\pi}\int_0^\pi f(t)\cos(nt)\dd{t}                                \\
+        & =\frac{2}{\pi}\int_0^\delta \left(1-\frac{t}{\delta}\right)\cos(nt)\dd{t}  \\
+        & =\begin{cases}
+             \displaystyle 2\frac{1-\cos(n\delta)}{\pi n^2\delta} & \text{si $n\ne 0$} \\
+             \frac{\delta}{\pi}                                   & \text{si $n=0$}
+           \end{cases}
+  \end{align*}
+  D'aquí (i recordant l'expressió \eqref{cosinus}) es desprèn automàticament el resultat ja que $f$ és contínua i derivable excepte a un nombre finit de punts i la derivada està acotada. De fet, per aquest motiu la convergència de $Sf$ a $f$ és uniforme.
+\end{res}
+\begin{exercici}
+  Proveu que els coeficients de Fourier es poden escriure com $$a_k=\frac{1}{2\pi}\int_{-\pi}^\pi\left[f(x)-f\left(x-\frac{\pi}{k}\right)\right]\cos(kx)\dd{x}\qquad b_k=\frac{1}{2\pi}\int_{-\pi}^\pi\left[f(x)-f\left(x-\frac{\pi}{k}\right)\right]\sin(kx)\dd{x}$$
+  Deduïu que si $f$ satisfà una condició Hölder d'ordre $\alpha$, i.e. $\abs{f(x)-f(y)}\leq L\abs{x-y}^\alpha$, llavors els coeficients de Fourier satisfan $$\abs{a_k}\leq L\frac{\pi^\alpha}{k^\alpha}\qquad\abs{b_k}\leq L\frac{\pi^\alpha}{k^\alpha}$$
+\end{exercici}
+\begin{res}
+  Per demostrar les igualtats és suficient veure que $$a_k=-\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\cos(kx)\dd{x}\qquad b_k=-\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\sin(kx)\dd{x}$$
+  Fent el canvi $y=x-\frac{\pi}{k}$ tenim que:
+  \begin{align*}
+    -\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\cos(kx)\dd{x} & = -\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\cos(ky+\pi)\dd{y} \\
+                                                                              & =\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\cos(ky)\dd{y}       \\
+                                                                              & =\frac{1}{\pi}\int_{-\pi}^{\pi} f(y)\cos(ky)\dd{y}                                   \\
+                                                                              & =a_k
+  \end{align*}
+  La penúltima igualtat es deu al fet que si $g$ és $T$-periòdica i integrable, aleshores $\forall x\in\RR$ tenim $$\int_x^{x+T}g(x)\dd{x}=\int_0^{T}g(x)\dd{x}$$
+  Similarment:
+  \begin{align*}
+    -\frac{1}{\pi}\int_{-\pi}^\pi f\left(x-\frac{\pi}{k}\right)\sin(kx)\dd{x} & = -\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\sin(ky+\pi)\dd{y} \\
+                                                                              & =\frac{1}{\pi}\int_{-\pi-\frac{\pi}{k}}^{\pi-\frac{\pi}{k}} f(y)\sin(ky)\dd{y}       \\
+                                                                              & =\frac{1}{\pi}\int_{-\pi}^{\pi} f(y)\sin(ky)\dd{y}                                   \\
+                                                                              & =b_k
+  \end{align*}
+  A partir d'aquestes igualtats si $f$ satisfà la condició de Hölder tenim:
+  \begin{align*}
+    \abs{a_k} & \leq\frac{1}{2\pi}\int_{-\pi}^\pi\abs{\left[f(x)-f\left(x-\frac{x}{k}\right)\right]\cos(kx)}\dd{x}\leq \frac{L}{2\pi}\int_{-\pi}^\pi\frac{\abs{\pi}^\alpha}{k^\alpha}\dd{x}= L\frac{\pi^\alpha}{k^\alpha} \\
+    \abs{b_k} & \leq\frac{1}{2\pi}\int_{-\pi}^\pi\abs{\left[f(x)-f\left(x-\frac{x}{k}\right)\right]\sin(kx)}\dd{x}\leq \frac{L}{2\pi}\int_{-\pi}^\pi\frac{\abs{\pi}^\alpha}{k^\alpha}\dd{x}=L\frac{\pi^\alpha}{k^\alpha}  \\
+  \end{align*}
+\end{res}
 \end{document}

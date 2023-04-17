@@ -1,0 +1,222 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[intlimits]{esint}
+\usepackage[left=1.5cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[catalan]{babel}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{fancyhdr}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}} % set of natural numbers
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}} % set of integers
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}} % set of rationals
+\newcommand{\RR}{\ensuremath{\mathbb{R}}} % set of real numbers
+\newcommand{\CC}{\ensuremath{\mathbb{C}}} % set of complex numbers
+\newcommand{\KK}{\ensuremath{\mathbb{K}}} % a general field
+
+\newcommand{\vf}[1]{\boldsymbol{\mathrm{#1}}} % math style for vectors and matrices and vector-values functions (previously it was \*vb{#1} but this does not apply to greek letters)
+\newcommand{\ii}{\mathrm{i}} % imaginary unit
+\renewcommand{\O}{\mathrm{O}} % big O-notation
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{exercici}{Exercici}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+\theoremstyle{remark}
+\newtheorem*{res}{Resolució}
+\DeclareDocumentCommand\derivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+    \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}
+    {
+        \IfNoValueTF{#5}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}}}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}} #3}{\diffd #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % differential operator
+\DeclareDocumentCommand\partialderivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+  \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}{
+      \IfNoValueTF{#5}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}}}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}} #3}{\partial #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % partial differential operator
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+% \renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
+
+\renewcommand{\exp}[1]{\mathrm{e}^{#1}} % exponential function
+\DeclareMathOperator*{\im}{Im}
+
+\title{\bfseries\Large Llista de problemes 3}
+
+\author{Víctor Ballester Ribó\\NIU: 1570866}
+\date{\parbox{\linewidth}{\centering
+  Anàlisi Harmònica\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Març de 2023}}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyhfoffset[L]{1cm}
+  \fancyhfoffset[R]{1cm}
+  \rhead{NIU: 1570866}
+  \lhead{Víctor Ballester}
+  \cfoot{\thepage}
+  %\setlength{\headheight}{13.6pt}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+\begin{exercici}
+  Siguin
+  $$f(x)=\chi_{[-1,1]}(x)\qquad\text{i}\qquad g(x)=\begin{cases}
+      1-\abs{x} & \text{si }\abs{x}\leq 1 \\
+      0         & \text{altrament}
+    \end{cases}$$
+  Proveu que
+  $$\widehat{f}(\xi)=\frac{\sin(2\pi\xi)}{\pi\xi}\qquad\text{i}\qquad\widehat{g}(\xi)={\left(\frac{\sin(\pi\xi)}{\pi\xi}\right)}^2$$
+  entenent que $\widehat{f}(0)=2$ i $\widehat{g}(0)=1$.
+\end{exercici}
+\begin{res}
+  Tenim que si $\xi=0$, aleshores $\widehat{f}(0)$ i $\widehat{g}(0)$ són respectivament les àrees del quadrat $2\times 1$ i del triangle amb base 2 i altura 1. Per tant, $\widehat{f}(0)=2$ i $\widehat{g}(0)=1$. Pels altres casos, calculem $\widehat{f}(\xi)$ i $\widehat{h}(\xi)$, on $h(x)=f(x)-g(x)=\abs{x}\chi_{[-1,1]}(x)$.
+  \begin{align*}
+    \widehat{f}(\xi) & =\int_{-\infty}^\infty f(x)\exp{-2\pi\ii\xi x}\dd{x}    & \widehat{h}(\xi) & =\int_{-1}^0 (-x)\exp{-2\pi\ii\xi x}\dd{x} +\int_{0}^1 x\exp{-2\pi\ii\xi x}\dd{x} \\
+                     & =\int_{-1}^1\exp{-2\pi\ii\xi x}\dd{x}                   &                  & =\int_{0}^1 x\exp{2\pi\ii\xi x}\dd{x} +\int_{0}^1 x\exp{-2\pi\ii\xi x}\dd{x}      \\
+                     & =\frac{\exp{2\pi\ii\xi}-\exp{-2\pi\ii\xi}}{2\pi\ii \xi} &                  & =2 \int_{0}^1 x\cos(2\pi\xi x)\dd{x}                                              \\
+                     & =\frac{\sin(2\pi\xi)}{\pi\xi}                           &                  & =\frac{2\pi\xi\sin(2\pi\xi) + \cos(2\pi\xi) - 1}{2\pi^2\xi^2}                     \\
+  \end{align*}
+  Per tant: $$\widehat{g}(\xi)=\widehat{f}(\xi)-\widehat{h}(\xi)=-\frac{\cos(2\pi\xi) - 1}{2\pi^2\xi^2}=\frac{{(\sin(\pi\xi))}^2}{\pi^2\xi^2}$$
+  on hem utilitzat la identitat trigonomètrica $2{(\sin(x))}^2=1-\cos(2x)$.
+\end{res}
+\begin{exercici}\hfill
+  \begin{enumerate}
+    \item Apliqueu la fórmula de sumació de Poisson a la funció $g$ de l'exercici 1 per provar
+          $$\sum_{n\in\ZZ}\frac{1}{{(n+\alpha)}^2}=\frac{\pi^2}{{(\sin(\pi\alpha))}^2}$$
+          si $\alpha\in\RR\setminus\ZZ$.
+    \item Deduïu com a conseqüència que
+          $$\sum_{n\in\ZZ}\frac{1}{n+\alpha}=\frac{\pi}{\tan(\pi\alpha)}$$
+          si $\alpha\in\RR\setminus\ZZ$.
+  \end{enumerate}
+\end{exercici}
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Notem primer de tot que ens podem restringir a $\alpha\in(0,1)$ (perquè tenim convergència absoluta de la sèrie i podem reordenar). Observem que $g$ és parella, per tant $\widehat{\widehat{g}}=g$. Aplicarem la fórmula de Poisson (general) a $\widehat{g}$. Fixem-nos que $\widehat{g}$ és contínua i integrable. A més $\sum_{n\in\ZZ}\widehat{g}(\xi+n)$ convergeix uniformement per $\xi\in[0,1]$ per M-Weierstra\ss, ja que $\abs{\widehat{g}(\xi+n)}\leq\frac{1}{\pi^2(\xi+n)^2}\leq \frac{1}{2\pi^2n^2}$ (per $n$ prou gran), que ens dona una sèrie convergent. Finalment $\sum_{n\in\ZZ}\abs{\widehat{\widehat{g}}(n)}=\sum_{n\in\ZZ}\abs{g(n)}=g(0)=1<\infty$. Per tant, la fórmula de sumació de Poisson ens diu que
+          $$1=\sum_{n\in\ZZ}\frac{{(\sin(\pi{(n+\alpha)}))}^2}{\pi^2{(n+\alpha)}^2}=\frac{{(\sin(\pi\alpha))}^2}{\pi^2}\sum_{n\in\ZZ}\frac{1}{{(n+\alpha)}^2}$$
+          on hem usat la identitat trigonomètrica $\sin(a+b)=\sin{a}\cos{b}+\sin{b}\cos{a}$. D'aquí ja es desprèn el resultat.
+    \item Aquí també podem suposar $\alpha\in(0,1)$ ja que fent una translació l'argument serveix igual. Com hem dit anteriorment la sèrie $\sum_{n\in\ZZ}\abs{\frac{1}{{(n+\alpha)}^2}}$ convergeix uniformement per $\alpha\in[0,1]$ per M-Weierstra\ss.
+
+          Definim $f_n(\alpha)=\frac{1}{{(n+\alpha)}^2}$. Tenim que $f_n$ és integrable Riemann en $[0,1]$ $\forall n\in\ZZ\setminus\{0,-1\}$. Vegem que també tenim integrabilitat de la funció $\frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{\alpha^2}-\frac{1}{(\alpha-1)^2}$ en $[0,1]$.
+
+          Els problemes només els tenim en 0 i 1. A prop del 0, hem de controlar $\frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{\alpha^2}$. Tenim que:
+          \begin{multline}\label{ex2}
+            \frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{\alpha^2}= \frac{\pi^2}{{(\pi\alpha-\frac{{(\pi\alpha)}^3}{6}+\cdots)}^2}-\frac{1}{\alpha^2}\simeq \frac{\pi^2}{\pi^2\alpha^2-\frac{\pi^4\alpha^4}{3}+\cdots}-\frac{1}{\alpha^2}\simeq \frac{1}{\alpha^2}\left(\frac{1}{1-\frac{\pi^2\alpha^2}{3}+\cdots}-1\right)\simeq \\\simeq \frac{1}{\alpha^2}\left(\left[1-\frac{\pi^2\alpha^2}{3}+\cdots\right]-1\right)\simeq \frac{\pi^2}{3}+\cdots
+          \end{multline}
+          Similarment a prop de 1, hem de controlar $\frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{{(\alpha-1)}^2}$. Fixem-nos que tenim certa simetria i ens podem estalviar càlculs. Canviant $\alpha$ per $\alpha-1$ en la fórmula anterior, tenim que:
+          $$\frac{\pi^2}{3}+\cdots\simeq\frac{\pi^2}{{(\sin(\pi(\alpha-1)))}^2}-\frac{1}{{(\alpha-1)}^2}=\frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{{(\alpha-1)}^2}$$
+          on hem usat la identitat trigonomètrica $\sin(a+b)=\sin{a}\cos{b}+\sin{b}\cos{a}$. Per tant tenim integrabilitat i llavors usant que $\int\frac{\pi^2}{{(\sin(\pi\alpha))}^2}\dd{\alpha}=-\frac{\pi}{\tan(\pi\alpha)}+C$ deduïm que:
+          \begin{align*}
+            \int\left(\frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{\alpha^2}-\frac{1}{{(\alpha-1)^2}}\right)\dd{\alpha} & =\sum_{n\in\ZZ\setminus\{0,-1\}}\int\frac{1}{{(n+\alpha)}^2}\dd{\alpha} \\
+            -\frac{\pi}{\tan(\pi\alpha)}+\frac{1}{\alpha}+\frac{1}{\alpha-1}+C                                          & =-\sum_{n\in\ZZ\setminus\{0,-1\}}\frac{1}{n+\alpha}
+          \end{align*}
+          Si ara fem el límit $\alpha\to0$ tindrem d'una banda que $-\frac{1}{\alpha-1}-\sum_{n\in\ZZ\setminus\{0,-1\}}\frac{1}{n+\alpha}=\sum_{n\in\ZZ\setminus\{0\}}\frac{1}{n+\alpha}\overset{\alpha\to 0}{\longrightarrow}0$ i d'altra banda que (per \eqref{ex2}):
+          $$-\frac{\pi}{\tan(\pi\alpha)}+\frac{1}{\alpha}=\int\left(\frac{\pi^2}{{(\sin(\pi\alpha))}^2}-\frac{1}{\alpha^2}\right)\dd{\alpha}\simeq\frac{\pi^2}{3}\alpha+\cdots\overset{\alpha\to 0}{\longrightarrow}0$$
+          Per tant $C=0$ i ja hem acabat.
+  \end{enumerate}
+\end{res}
+\begin{exercici}
+  Suposeu que $f$ és contínua a $\RR$. Proveu que $f$ i $\widehat{f}$ no poden tenir les dues suport compacte a no ser que $f = 0$. Això es pot interpretar amb el mateix esperit que el principi d'incertesa.
+\end{exercici}
+\begin{res}
+  Suposem que $f$ i $\widehat{f}$ tenen suports compactes $K_1\subseteq [-(N-1),N-1]\subseteq [-N,N]$ i $K_2\subseteq [-M,M]$ respectivament per certs $N,M\in\NN$. Aleshores fem la periodització de $f$ amb període $2N$ (que també l'anomenem $f$). Llavors la seva sèrie de mitjanes de Fejér és:
+  \begin{multline*}
+    \sigma_Rf(x)=\sum_{n=-R}^{R}\left(1-\frac{\abs{n}}{R+1}\right)\widehat{f}(n)\exp{\frac{2\pi\ii n x}{2N}}=\sum_{n=-M}^{M}\left(1-\frac{\abs{n}}{R+1}\right)\widehat{f}(n)\exp{\frac{2\pi\ii n x}{2N}}=\\
+    =\sum_{n=-M}^{M}\widehat{f}(n)\exp{\frac{2\pi\ii n x}{2N}}-\frac{1}{R+1}\sum_{n=-M}^{M}\abs{n}\widehat{f}(n)\exp{\frac{2\pi\ii n x}{2N}}\overset{R\to\infty}{\longrightarrow} \sum_{n=-M}^{M}\widehat{f}(n)\exp{\frac{2\pi\ii n x}{2N}}
+  \end{multline*}
+  Ara bé, per la continuïtat de $f$ i el teorema de Fejér, tenim que
+  $$f(x)=\lim_{R\to\infty}\sigma_Rf(x)=\sum_{n=-M}^{M}\widehat{f}(n)\exp{\frac{2\pi\ii n x}{2N}}$$
+  per a tot $x\in\RR$.
+  Observem que com que $\exp{\frac{2\pi\ii n x}{2N}}$ és analítica, i combinacions lineals (finites) de funcions analítiques són analítiques, tenim que $f$ també ho és. Però $f(x)=0$ per $x\in(N-1,N)$. Per tant, pel principi de prolongació analítica, tenim que $f=0$.
+
+  A posteriori m'he adonat que es pot fer més fàcil recordant que si $f\in L^1(\RR)$ i té suport compacte (que és el cas), llavors $\widehat{f}\in\mathcal{C}^\omega(\RR)$ i, pel mateix argument que hem fet, deduïm que $f=0$.
+\end{res}
+\begin{exercici}
+  Sigui $\psi$ tal que $\int_{\RR^d}\abs{\psi(\vf{x})}^2\dd{\vf{x}}=1$. Demostreu el principi d'incertesa de Heisenberg en dimensions $d$:
+  $$\left(\int_{\RR^d} \norm{\vf{x}}^2 \abs{\psi(\vf{x})}^2\dd{\vf{x}}\right)\left(\int_{\RR^d} \norm{\vf\xi}^2 \abs{\widehat{\psi}(\vf\xi)}^2\dd{\vf\xi}\right)\geq \frac{d^2}{16\pi^2}$$
+\end{exercici}
+\begin{res}
+  Ometrem l'avaluació de les funcions a $\vf{x}$ i a $\vf{\xi}$ per tal de simplificar la lectura.
+
+  Estudiem primer la integral $\int_{\RR^d} \norm{\vf\xi}^2 \abs{\widehat{\psi}}^2\dd{\vf\xi}$. Fixem-nos que:
+  \begin{multline*}
+    \int_{\RR^d} \norm{\vf\xi}^2 \abs{\widehat{\psi}}^2\dd{\vf\xi}=\int_{\RR^d}\sum_{j=1}^d{\xi_j}^2\abs{\widehat{\psi}}^2\dd{\vf\xi}=\frac{1}{4\pi^2}\int_{\RR^d}\sum_{j=1}^d4\pi^2{\xi_j}^2\abs{\widehat{\psi}}^2\dd{\vf\xi}=\frac{1}{4\pi^2}\int_{\RR^d}\sum_{j=1}^d\abs{\widehat{\pdv{\psi}{\xi_j}}}^2\dd{\vf\xi}=\\
+    =\frac{1}{4\pi^2}\sum_{j=1}^d\int_{\RR^d}\abs{{\pdv{\psi}{\xi_j}}}^2\dd{\vf\xi}=\frac{1}{4\pi^2}\int_{\RR^d}\norm{{\grad\psi}}^2\dd{\vf{x}}
+  \end{multline*}
+  on hem utilitzat el teorema de Plancherel en dimensió $d$. D'altra banda:
+  \begin{align*}
+    \left(\int_{\RR^d} \norm{\vf{x}}^2 \abs{\psi}^2\dd{\vf{x}}\right)\left(\int_{\RR^d} \norm{\vf\xi}^2 \abs{\widehat{\psi}}^2\dd{\vf\xi}\right) & =\frac{1}{4\pi^2}\left(\int_{\RR^d} \norm{\vf{x}}^2 \abs{\psi}^2\dd{\vf{x}}\right)\left(\int_{\RR^d}\norm{{\grad\psi}}^2\dd{\vf\xi}\right)                              \\                                                                                                                                             & \geq \frac{1}{4\pi^2}{\left(\int_{\RR^d} \norm{\vf{x}} \abs{\psi}\norm{{\grad\psi}}\dd{\vf{x}}\right)}^2  \qquad\text{(Cauchy-Schwarz per integrals)}                                 \\
+                                                                                                                                                 & = \frac{1}{4\pi^2}{\left(\int_{\RR^d} \norm{\vf{x}} \abs{\psi}\norm{{\grad\overline\psi}}\dd{\vf{x}}\right)}^2                                                          \\
+                                                                                                                                                 & \geq \frac{1}{4\pi^2}{\left(\int_{\RR^d}  \abs{\psi}\abs{\langle\vf{x},\grad\overline\psi\rangle}\dd{\vf{x}}\right)}^2        \qquad\text{(Cauchy-Schwarz per vectors)} \\
+                                                                                                                                                 & \geq \frac{1}{4\pi^2}{\left(\int_{\RR^d}  \Re(\psi\langle\vf{x},\grad\overline\psi\rangle)\dd{\vf{x}}\right)}^2  \qquad\text{$\abs{z}\geq \Re(z)$ $\forall z\in\CC$}    \\
+                                                                                                                                                 & = \frac{1}{16\pi^2}{\left(\int_{\RR^d}  \sum_{j=1}^dx_j2\Re\left(\psi\pdv{\overline\psi}{x_j}\right)\dd{\vf{x}}\right)}^2                                               \\                                                                                                                & = \frac{1}{16\pi^2}{\left(\int_{\RR^d}\sum_{j=1}^{d}x_j\pdv{(\abs{\psi}^2)}{x_j}\dd{\vf{x}}\right)}^2    \\
+                                                                                                                                                 & = \frac{1}{16\pi^2}{\left(d\int_{\RR^d}\abs{\psi}^2\dd{\vf{x}}\right)}^2                                                                                                \\
+                                                                                                                                                 & = \frac{d^2}{16\pi^2}
+  \end{align*}
+  on en l'antepenúltima igualtat hem usat que si $\psi=A+\ii B$ aleshores $\pdv{(A^2+B^2)}{x_j}=2AA_{x_j}+2BB_{x_j}=2\Re\left(\psi\pdv{\overline\psi}{x_j}\right)$ i en la penúltima igualtat hem usat el teorema de Fubini:
+  \begin{multline*}
+    \int_{\RR^d}\sum_{j=1}^{d}x_j\pdv{(\abs{\psi}^2)}{x_j}\dd{\vf{x}}=\sum_{j=1}^{d}\int_{\RR^{d-1}}\dd{(x_1,\ldots,x_{j-1},x_{j+1},\ldots,x_d)}\int_{\RR} x_j\pdv{(\abs{\psi}^2)}{x_j}\dd{x_j}=\\=\sum_{j=1}^{d}\int_{\RR^{d-1}}\dd{(x_1,\ldots,x_{j-1},x_{j+1},\ldots,x_d)}\int_{\RR} \abs{\psi}^2\dd{x_j}=d\int_{\RR^d}\abs{\psi}^2\dd{\vf{x}}
+  \end{multline*}
+  on hem utilitzat integració per parts i hem assumit que $x_j\abs{\psi}^2\in L^1(\RR)$ $\forall j$ (com en el cas d'una variable). Anteriorment també hem assumit que $\psi$ era diferenciable.
+\end{res}
+
+
+\begin{exercici}\hfill
+  \begin{enumerate}
+    \item Donada $f[n]=\cos(\frac{\pi}{2}n)$, $n=0,1,2,3$, calculeu la seva DFT.
+    \item Sigui $f[n]=(1,2,0,3,-2,4,7,5)$. Calculeu $\widehat{f}[0]$, $\widehat{f}[4]$, $\sum_{k=0}^{7}\widehat{f}[k]$, $\sum_{k=0}^{7}\abs{\widehat{f}[k]}^2$.
+  \end{enumerate}
+\end{exercici}
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Tenim que:
+          $$\widehat{f}[n]=\sum_{k=0}^{3}\cos(\frac{\pi}{2}k)\exp{-\frac{2\pi\ii kn}{4}}=1-\exp{-\pi\ii n}=1-{(-1)}^n$$
+    \item Tenim que:
+          \begin{gather*}
+            \widehat{f}[0] =\sum_{k=0}^{7}f[k]=20                                                         \\
+            \widehat{f}[4] =\sum_{k=0}^{7}f[k]\exp{-\pi\ii k}=\sum_{k=0}^{7}f[k]{(-1)}^k=-8
+          \end{gather*}
+          A més per la fórmula de sumació de Poisson i la identitat de Plancherel tenim que:
+          \begin{gather*}
+            \sum_{k=0}^{7}\widehat{f}[k]=8f[0]=8\\
+            \sum_{k=0}^{7}\abs{\widehat{f}[k]}^2=8\sum_{k=0}^{7}\abs{{f}[k]}^2=8\cdot 108=864
+          \end{gather*}
+  \end{enumerate}
+\end{res}
+\end{document}
