@@ -20,6 +20,8 @@
 \newcommand{\vf}[1]{\boldsymbol{\mathrm{#1}}} % math style for vectors and matrices and vector-values functions (previously it was \*vb{#1} but this does not apply to greek letters)
 \newcommand{\ii}{\mathrm{i}} % imaginary unit
 \renewcommand{\O}{\mathrm{O}} % big O-notation
+\DeclareMathOperator{\supp}{\mathrm{supp}} % support
+\allowdisplaybreaks
 
 \newtheorem{theorem}{Teorema}
 \newtheorem{exercici}{Exercici}
@@ -104,19 +106,78 @@
   Són distribucions $T_1$, $T_2$ i $T_3$ definides com $T_1=\sum_{k=1}^\infty \frac{\delta_{1/k}}{k^2}$, $T_2=\sum_{k=1}^\infty \frac{\delta_{1/k}}{k}$ i $T_3$ tal que $\langle T_3,\varphi\rangle=\sum_{n=1}^\infty\int_0^n \varphi'(x)\dd{x}$ per $\varphi\in\mathcal{D}(\RR)$?
 \end{exercici}
 \begin{res}
+  Sigui $\varphi,\psi\in\mathcal{D}(\Omega)$. Tenim que
+  $$T_1(\varphi+\psi)=\sum_{k=1}^\infty \frac{\delta_{1/k}(\varphi+\psi)}{k^2}=\sum_{k=1}^\infty \frac{\varphi(1/k)+\psi(1/k)}{k^2}=\sum_{k=1}^\infty \frac{\varphi(1/k)}{k^2}+\sum_{k=1}^\infty \frac{\psi(1/k)}{k^2}=T_1(\varphi)+T_1(\psi)$$
+  on hem pogut reordenar perquè la sèrie absolutament convergent pel criteri M-Weierstra\ss\ ja que $\abs{\varphi(1/k)+\psi(1/k)}\leq \norm{\varphi}_\infty+\norm{\psi}_\infty=C\in\RR$. Per tant, $T_1$ és lineal. A més:
+  $$
+    \abs{T_1(\varphi)}\leq \sum_{k=1}^\infty \frac{\abs{\varphi(1/k)}}{k^2}\leq \frac{\pi^2}{6}\norm{\varphi}_\infty
+  $$
+  Per tant, $T_1$ és continu, per una proposició vista a classe.
 
+  Ara veurem que tant $T_2$ com $T_3$ no són distribucions. Sigui
+  $$
+    \varphi(x)=\begin{cases}
+      \exp{-\frac{1}{1-x^2}} & \text{si } x\in(-1,1) \\
+      0                      & \text{altrament}
+    \end{cases}
+  $$
+  Sabem que $\varphi\in\mathcal{D}(\RR)$. A més, $\varphi(0)=\exp{-1}$ i $\varphi(1/k)\geq \varphi(1/2) = \exp{-4/3}$ per $k\geq 2$. Per tant:
+  \begin{align*}
+    T_2(\varphi) & =\sum_{k=1}^{\infty}\frac{\delta_{1/k}(\varphi)}{k}=\sum_{k=1}^{\infty}\frac{\varphi(1/k)}{k}\geq\exp{-4/3}\sum_{k=2}^{\infty}\frac{1}{k}=\infty \\
+    T_3(\varphi) & =\sum_{n=1}^{\infty}\int_0^n \varphi'(x)\dd{x}=\sum_{n=1}^{\infty}[\varphi(n)-\varphi(0)]=-\sum_{n=1}^{\infty}\exp{-1}=-\infty
+  \end{align*}
+  Per tant, hem trobat un element de $\mathcal{D}(\RR)$ que aplicat a $T_2$ i $T_3$ dona un resultat infinit (que no pertany a $\CC$). Per tant, no poden ser distribucions.
 \end{res}
 \begin{exercici}
   Considereu la distribució $T=\log\abs{x}$. Demostreu que $T'=\pv\frac{1}{x}$. Calculeu $T''$.
 \end{exercici}
 \begin{res}
-
+  Recordem primer que $\log\abs{x}$ és localment integrable i que per tant té sentit considerar la seva distribució. Sigui $\varphi\in\mathcal{D}(\Omega)$. Tenim que:
+  \begin{align*}
+    \langle T',\varphi\rangle & = -\langle T, \varphi'\rangle                                                                              \\
+                              & = -\int_{-\infty}^{+\infty} \log\abs{x}\varphi'(x)\dd{x}                                                   \\
+                              & = -\int_{0}^{+\infty} \log(x)(\varphi'(x)+\varphi'(-x))\dd{x}                                              \\
+                              & = -\int_{0}^{+\infty} \log(x){(\varphi(x)-\varphi(-x))}'\dd{x}                                             \\
+                              & = -\log(x)(\varphi(x)-\varphi(-x))\Big|_0^\infty+\int_{0}^{+\infty} \frac{\varphi(x)-\varphi(-x)}{x}\dd{x} \\
+                              & = \int_{0}^{+\infty} \frac{\varphi(x)-\varphi(-x)}{x}\dd{x}                                                \\
+                              & =\left\langle\pv\left(\frac{1}{x}\right),\varphi\right\rangle
+  \end{align*}
+  on en la penúltima igualtat hem usat que $\varphi$ té suport compacte i que $\log(x)(\varphi(x)-\varphi(-x))\sim Cx\log(x)\to 0$ per $x\sim 0$. Calculem ara $T''={\left(\pv\left(\frac{1}{x}\right)\right)}'$:
+  \begin{align*}
+    \left\langle {\left(\pv\left(\frac{1}{x}\right)\right)}',\varphi\right\rangle & = -\left\langle \pv\left(\frac{1}{x}\right),\varphi'\right\rangle                                                                                                                                                                       \\
+                                                                                  & =-\int_0^\infty \frac{\varphi'(x)-\varphi'(-x)}{x}\dd{x}                                                                                                                                                                                \\
+                                                                                  & =-\int_0^\infty \frac{{\left[\varphi(x)+\varphi(-x)\right]}'}{x}\dd{x}                                                                                                                                                                  \\
+                                                                                  & =-\frac{\varphi(x)+\varphi(-x)}{x}\bigg|_0^\infty-\int_0^\infty \frac{\varphi(x)+\varphi(-x)}{x^2}\dd{x}                                                                                                                                \\
+                                                                                  & =\lim_{\varepsilon\to 0}\frac{\varphi(\varepsilon)+\varphi(-\varepsilon)}{\varepsilon}-\lim_{\varepsilon\to 0}\int_\varepsilon^\infty \left(\frac{\varphi(x)+\varphi(-x)-2\varphi(0)}{x^2}+\frac{2\varphi(0)}{x^2}\right)\dd{x}         \\
+                                                                                  & =\lim_{\varepsilon\to 0}\left(\frac{\varphi(\varepsilon)+\varphi(-\varepsilon)}{\varepsilon}-\frac{2\varphi(0)}{\varepsilon}\right)-\lim_{\varepsilon\to 0}\int_\varepsilon^\infty \frac{\varphi(x)+\varphi(-x)-2\varphi(0)}{x^2}\dd{x} \\
+                                                                                  & =-\int_0^\infty \frac{\varphi(x)+\varphi(-x)-2\varphi(0)}{x^2}\dd{x}
+  \end{align*}
+  on en l'última igualtat hem fet servir que $\varphi(\varepsilon)+\varphi(-\varepsilon)-2\varphi(0)\sim C\varepsilon^2$ per $\varepsilon\sim 0$ (surt fent Taylor). Per tant, la integral està ben definida al 0 (i també a l'infinit ja que podem acotar l'integrant per $\frac{4\norm{\varphi}_\infty}{x^2}$). A més com que és lineal (per la linealitat de la integral), tenim que $T''$ és una distribució que ve donada per:
+  $$
+    \varphi\longmapsto -\int_0^\infty \frac{\varphi(x)+\varphi(-x)-2\varphi(0)}{x^2}\dd{x}
+  $$
 \end{res}
 \begin{exercici}
-  Sigui $T\in \mathcal{D}(\RR)$ tal que $T'=0$. Demostreu que existeix una constant $C$ tal que $\langle T,\varphi\rangle=C\int \varphi(t)\dd{t}$ $\forall \varphi\in\mathcal{D}(\RR)$.
+  Sigui $T\in \mathcal{D}^*(\RR)$ tal que $T'=0$. Demostreu que existeix una constant $C$ tal que $\langle T,\varphi\rangle=C\int_{-\infty}^{\infty} \varphi(t)\dd{t}$ $\forall \varphi\in\mathcal{D}(\RR)$.
 \end{exercici}
 \begin{res}
-
+  Sigui $\varphi\in \mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty} \varphi(t)\dd{t}=0$. Tenim que si
+  $$
+    \psi(x):=\int_{-\infty}^x \varphi(t)\dd{t}
+  $$
+  aleshores $\psi$ té suport compacte, perquè $\varphi$ té suport compacte i integra 0, i a més $\psi$ és diferenciable i $\psi'(x)=\varphi(x)$ pel teorema fonamental del càlcul, i de fet és $\mathcal{C}^\infty(\RR)$. Per tant, $\psi\in\mathcal{D}(\RR)$. Llavors:
+  $$
+    T(\varphi)=T(\psi')=-T'(\psi)=0
+  $$
+  ja que $T'=0$ per hipòtesi. Per tant, $T(\varphi)=0$ $\forall \varphi\in\mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty} \varphi(t)\dd{t}=0$. Ara prenem $\phi\in \mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty} \phi(t)\dd{t}=1$ i sigui $\omega\in \mathcal{D}(\RR)$ arbitrària. Tenim que
+  $$
+    \varphi:=\omega-\phi\int_{-\infty}^{+\infty} \omega(t)\dd{t}
+  $$
+  és una funció de $\mathcal{D}(\Omega)$ que integra 0. Per tant, pel que hem vist anteriorment i la linealitat de $T$ obtenim:
+  $$
+    0=T(\varphi)=T\left(\omega-\phi\int_{-\infty}^{+\infty} \omega(t)\dd{t}\right)=T(\omega)-T(\phi)\int_{-\infty}^{+\infty} \omega(t)\dd{t}
+  $$
+  Per tant, la constant $C$ és $C:= T(\phi)$.
 \end{res}
 \begin{exercici}\hfill
   \begin{enumerate}
@@ -129,7 +190,32 @@
           $$
   \end{enumerate}
 \end{exercici}
-\begin{res}
-
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Assumim que $[x]=\lfloor x\rfloor$. Tenim que per $\varphi\in\mathcal{D}(\RR)$:
+          $$
+            \langle \lfloor x\rfloor',\varphi\rangle=-\langle\lfloor x\rfloor,\varphi'\rangle=-\int_{-\infty}^{+\infty} \lfloor x\rfloor\varphi'(x)\dd{x}=-\sum_{n\in\ZZ}n\int_{n}^{n+1} \varphi'(x)\dd{x}=-\sum_{n\in\ZZ}n[\varphi(n+1)-\varphi(n)]
+          $$
+          Si suposem que $\supp\varphi\subseteq [-N,N]$, tenim que:
+          \begin{align*}
+            \langle \lfloor x\rfloor',\varphi\rangle & =-\sum_{n=-N-1}^{N}n[\varphi(n+1)-\varphi(n)]                                                   \\
+                                                     & =-\left[-(-N-1)\varphi(-N-1)+\sum_{n=-N}^{N}[(n-1)\varphi(n)-n\varphi(n)]+ N\varphi(N+1)\right] \\
+                                                     & =\sum_{n=-N}^{N}\varphi(n)                                                                      \\
+                                                     & =\sum_{n\in\ZZ} \delta_n(\varphi)
+          \end{align*}
+          Per tant, $\lfloor x\rfloor'=\sum_{n\in\ZZ}\delta_n$, que és una distribució perquè la suma és sempre finita.
+    \item Tenim que per $\varphi\in\mathcal{D}(\RR)$:
+          \begin{align*}
+            \langle g',\varphi\rangle=-\langle g,\varphi'\rangle & =-\int_0^{\infty}\frac{\varphi'(x)}{\sqrt{x}}\dd{x}                                                                                                                                                                             \\
+                                                                 & =-\frac{\varphi(x)}{\sqrt{x}}\bigg|_0^\infty-\frac{1}{2}\int_0^\infty \frac{\varphi(x)}{x^{3/2}}\dd{x}                                                                                                                          \\
+                                                                 & =\lim_{\varepsilon\to 0}\frac{\varphi(\varepsilon)}{\sqrt{\varepsilon}}-\frac{1}{2}\lim_{\varepsilon\to 0}\int_\varepsilon^\infty \left(\frac{\varphi(x)-\varphi(0)}{x^{3/2}}+\frac{\varphi(0)}{x^{3/2}}\right)\dd{x}           \\
+                                                                 & =\lim_{\varepsilon\to 0}\left(\frac{\varphi(\varepsilon)}{\sqrt{\varepsilon}}-\frac{\varphi(0)}{\sqrt{\varepsilon}}\right)-\frac{1}{2}\lim_{\varepsilon\to 0}\int_\varepsilon^\infty\frac{\varphi(x)-\varphi(0)}{x^{3/2}}\dd{x} \\
+                                                                 & =-\frac{1}{2}\int_0^\infty\frac{\varphi(x)-\varphi(0)}{x^{3/2}}\dd{x}
+          \end{align*}
+          Per tant, com que la integral està ben definida en un entorn del 0 (ja que és de la forma $\frac{1}{\sqrt{x}}$) i com que també podem acotar l'integrant per $\frac{2\norm{\varphi}_\infty}{x^{3/2}}$, tenim que també està ben definida a l'infinit i per tant és distribució (ja que també és lineal, per la linealitat del la integral). Així doncs, $g'$ és la distribució donada per:
+          $$
+            \varphi\longmapsto -\frac{1}{2}\int_0^\infty\frac{\varphi(x)-\varphi(0)}{x^{3/2}}\dd{x}
+          $$
+  \end{enumerate}
 \end{res}
 \end{document}

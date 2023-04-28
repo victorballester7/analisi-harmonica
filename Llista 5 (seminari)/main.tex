@@ -1,0 +1,195 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[intlimits]{esint}
+\usepackage[left=1.5cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[catalan]{babel}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{fancyhdr}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}} % set of natural numbers
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}} % set of integers
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}} % set of rationals
+\newcommand{\RR}{\ensuremath{\mathbb{R}}} % set of real numbers
+\newcommand{\CC}{\ensuremath{\mathbb{C}}} % set of complex numbers
+\newcommand{\KK}{\ensuremath{\mathbb{K}}} % a general field
+
+\newcommand{\vf}[1]{\boldsymbol{\mathrm{#1}}} % math style for vectors and matrices and vector-values functions (previously it was \*vb{#1} but this does not apply to greek letters)
+\newcommand{\ii}{\mathrm{i}} % imaginary unit
+\renewcommand{\O}{\mathrm{O}} % big O-notation
+\DeclareMathOperator{\supp}{\mathrm{supp}} % support
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{exercici}{Exercici}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+\theoremstyle{remark}
+\newtheorem*{res}{Resolució}
+\DeclareDocumentCommand\derivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+    \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}
+    {
+        \IfNoValueTF{#5}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}}}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}} #3}{\diffd #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % differential operator
+\DeclareDocumentCommand\partialderivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+  \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}{
+      \IfNoValueTF{#5}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}}}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}} #3}{\partial #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % partial differential operator
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+
+%%% HARMONIC ANALYSIS
+\newcommand{\F}{\mathcal{F}} % Fourier transform operator
+\renewcommand{\pv}{\mathrm{p.v.}} % Cauchy principal value
+
+% \renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
+
+\renewcommand{\exp}[1]{\mathrm{e}^{#1}} % exponential function
+\DeclareMathOperator*{\im}{Im}
+
+\setlength\multlinegap{0pt} % disable the margins on \begin{multline} command.
+  \allowdisplaybreaks
+
+
+\title{\bfseries\Large Llista de problemes 5}
+
+\author{Víctor Ballester Ribó\\NIU: 1570866}
+\date{\parbox{\linewidth}{\centering
+  Anàlisi Harmònica\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Abril de 2023}}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyhfoffset[L]{1cm}
+  \fancyhfoffset[R]{1cm}
+  \rhead{NIU: 1570866}
+  \lhead{Víctor Ballester}
+  \cfoot{\thepage}
+  %\setlength{\headheight}{13.6pt}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+\begin{exercici}
+  Calculeu la segona derivada distribucional de les funcions $f(x)=\exp{-\abs{x}}$ i
+  $$
+    g(x)=\begin{cases}
+      1-\abs{x} & \abs{x}\leq 1 \\
+      0         & \abs{x}>1
+    \end{cases}
+  $$
+\end{exercici}
+\begin{res}
+  Sigui $\varphi\in\mathcal{D}(\RR)$. Tenim que:
+  \begin{multline*}
+    \langle T_f'',\varphi\rangle = \langle T_f,\varphi''\rangle=\int_{-\infty}^{+\infty}f(x)\varphi''(x) \dd{x}=\int_{0}^{\infty}\exp{-x}[\varphi''(x) +\varphi''(-x)] \dd{x}=\exp{-x}[\varphi'(x) -\varphi'(-x)]\Big|_0^\infty+\\+\int_{0}^{\infty}\exp{-x}[\varphi'(x) -\varphi'(-x)] \dd{x}=\exp{-x}[\varphi(x) +\varphi(-x)]\Big|_0^\infty+\int_{0}^{\infty}\exp{-x}[\varphi(x) +\varphi(-x)] \dd{x}=-2\varphi(0)+\langle T_f,\varphi\rangle
+  \end{multline*}
+  Per tant, $T_f''=T_f-2\delta_0$. D'altra banda:
+  \begin{multline*}
+    \langle T_g'',\varphi\rangle = \langle T_g,\varphi''\rangle=\int_{-\infty}^{+\infty}g(x)\varphi''(x) \dd{x}=\int_{0}^{1}(1-x)[\varphi''(x)+\varphi''(-x)] \dd{x}=\\=(1-x)[\varphi'(x)-\varphi'(-x)]\Big|_0^{1}+\int_{0}^{1}[\varphi'(x)-\varphi'(-x)] \dd{x}=-2\varphi(0)+\varphi(1) +\varphi(-1)
+  \end{multline*}
+  Per tant, $T_g''=-2\delta_0+\delta_1+\delta_{-1}$.
+\end{res}
+\begin{exercici}
+  Resoleu l'equació diferencial distribucional ${(xT)}'=\vf{1}_{(0,\infty)}$.
+\end{exercici}
+\begin{res}
+  Observem que $\vf{1}_{(0,\infty)}$ és una solució particular de l'equació diferencial. Per tant, per la linealitat de la derivada tenim que ${(xT - x\vf{1}_{(0,\infty)})}'=0$. Per l'exercici 3 de la llista anterior tenim que $xT - x\vf{1}_{(0,\infty)}=C_1$. És a dir, (usant que $x\pv\left(\frac{1}{x}\right)=1$) tenim que:
+  $$
+    x\left(T-\vf{1}_{(0,\infty)}-C_1\pv\left(\frac{1}{x}\right)\right)=0
+  $$
+  Ara justifiquem que si $xS=0$, amb $S\in\mathcal{D}^*(\RR)$, aleshores $S=C\delta_0$. Sigui $\phi\in\mathcal{D}(\RR)$ tal que $\phi(0)=0$. Aleshores $\varphi:=\frac{\phi}{x}\in\mathcal{D}(\RR)$ i tenim que:
+  $$\langle T,\phi\rangle=\langle T,x\varphi\rangle=\langle xT,\varphi\rangle=0$$
+  Ara sigui $\psi\in\mathcal{D}(\RR)$ qualsevol i $\omega\in \mathcal{D}(\RR)$ tal que $\omega(0)=1$. Aleshores $\phi:=\psi-\psi(0)\omega\in\mathcal{D}(\RR)$ i satisfà $\phi(0)=0$. Per tant, per la linealitat de $T$ i usant el demostrat prèviament, tenim que:
+  $$
+    T(\psi)=\langle T,\psi \rangle =\psi(0) \langle T,\omega \rangle =: \psi(0) C=C\delta_0(\psi)
+  $$
+  És a dir, $T=C\delta_0$. Per tant, en el nostre cas:
+  $$
+    T=\vf{1}_{(0,\infty)}+C_1\pv\left(\frac{1}{x}\right)+C_2\delta_0
+  $$
+\end{res}
+\begin{exercici}
+  Proveu que tota distribució té una primitiva. És a dir, donada $T\in\mathcal{D}(\RR)$, $\exists S\in\mathcal{D}(\RR)$ tal que $T=S'$.
+\end{exercici}
+\begin{res}
+  Sigui $\phi\in\mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty}\phi(x) \dd{x}=0$. Aleshores ja vam veure a la llista passada que $\exists\psi\in \mathcal{D}(\RR)$ tal que $\phi=\psi'$. Per tant, triem $S$ tal que:
+  $$
+    \langle S,\phi\rangle = \langle S,\psi'\rangle = -\langle S',\psi\rangle = -\langle T,\psi\rangle
+  $$
+  Observem que amb aquesta definició de $S$ tenim que:
+  $$
+    \langle S',\phi\rangle = - \langle S, \phi'\rangle =-(-\langle T, \psi' \rangle) = \langle T, \phi \rangle
+  $$
+  Ara sigui $\varphi\in\mathcal{D}(\RR)$ qualsevol i sigui $\omega\in \mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty}\omega(x) \dd{x}=1$.
+  Aleshores tenim que $\phi:=\varphi-\int_{-\infty}^{+\infty}\varphi(x) \dd{x}\omega\in\mathcal{D}(\RR)$ i integra 0. Per tant, pel vist anteriorment, si $\psi(t)=\int_{-\infty}^{t}\varphi(x)\dd{x}-\int_{-\infty}^{+\infty} \varphi(x)\dd{x}\int_{-\infty}^{t}\omega(x)\dd{x}$, aleshores definim $S$ com:
+  $$
+    \langle S,\varphi \rangle := -\left\langle T, \int_{-\infty}^{\cdot}\varphi(x)\dd{x}-\int_{-\infty}^{+\infty} \varphi(x)\dd{x}\int_{-\infty}^{\cdot}\omega(x)\dd{x} \right\rangle  +\int_{-\infty}^{+\infty}\varphi(x)\dd{x}\langle T,\omega\rangle
+  $$
+  Observem que tenim:
+  $$
+    \langle S',\varphi \rangle = -\langle S,\varphi' \rangle = \left\langle T,\varphi-\int_{-\infty}^{+\infty} \varphi(x)\dd{x}\omega \right\rangle +\int_{-\infty}^{+\infty}\varphi(x)\dd{x}\langle T,\omega\rangle= \langle T,\varphi \rangle
+  $$
+\end{res}
+\begin{exercici}\hfill
+  \begin{enumerate}
+    \item Sigui $f\in C^1(\RR\setminus\{a\})$ amb $a$ un salt d'alçada $s$ (i.e. $f(a^+) - f(a^-) = s$). Proveu que $T_f'=T_{f'\vf{1}_{\RR\setminus\{a\}}}+s\delta_{a}$.
+    \item De manera similar, si $f\in C^1(\RR\setminus\{(a_n)\})$ amb $(a_n)$ una successió tal que $\displaystyle \lim_{n\to\infty}\abs{a_n}=\infty$ i $a_n$ són salts d'alçada $s_n$, llavors:
+          $$
+            T_f'=T_{f'\vf{1}_{\RR\setminus\{(a_n)\}}}+\sum_{n=1}^\infty s_n\delta_{a_n}
+          $$
+  \end{enumerate}
+\end{exercici}
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Sigui $\varphi\in\mathcal{D}(\RR)$. Tenim que:
+          \begin{multline*}
+            \langle T_f',\varphi\rangle = -\langle T_f,\varphi'\rangle=-\int_{-\infty}^{+\infty}f(x)\varphi'(x) \dd{x}=-\int_{-\infty}^{a} f(x) \varphi'(x)\dd{x} - \int_{a}^{+\infty} f(x) \varphi'(x)\dd{x} =\\= -f(a^-)\varphi(a)+f(a^+)\varphi(a)+\int_{-\infty}^{a} f'(x) \varphi(x)\dd{x} + \int_{a}^{+\infty} f'(x) \varphi(x)\dd{x} = s \varphi(a) + T_{f'\vf{1}_{\RR\setminus\{a\}}}(\varphi)
+          \end{multline*}
+          Per tant, $T_f'=T_{f'\vf{1}_{\RR\setminus\{a\}}}+s\delta_{a}$.
+    \item Com que la successió $(a_n)$ és tal que $\displaystyle \lim_{n\to\infty}\abs{a_n}=\infty$, entre dos punts $x<y$ reals no podem tenir infinits punts de la successió. Per tant, podem considerar la partició en intervals $(I_k)$, donats per $I_k=(a_{n_k},a_{n_{k+1}})$ que ens dona la successió entre dos termes (no necessàriament consecutius) de la successió. Aleshores, si $\varphi\in\mathcal{D}(\RR)$, tenim que:
+          \begin{multline*}
+            \langle T_f',\varphi\rangle = -\langle T_f,\varphi'\rangle=-\int_{-\infty}^{+\infty}f(x)\varphi'(x) \dd{x}=-\sum_{k=1}^\infty \int_{I_k} f(x) \varphi'(x)\dd{x} = \sum_{k=1}^\infty \left( f(a_{n_k}^+)\varphi(a_{n_k})-f(a_{n_{k+1}}^-)\varphi(a_{n_{k+1}})\right) +\\+ \sum_{k=1}^\infty \int_{I_k} f'(x) \varphi(x)\dd{x} =\sum_{n=1}^\infty s_n \varphi(a_n) + T_{f'\vf{1}_{\RR\setminus\{(a_n)\}}}(\varphi)
+          \end{multline*}
+          on hem pogut reordenar perquè la suma és finita, ja que $\varphi$ té suport compacte. Per tant:
+          $$
+            T_f'=T_{f'\vf{1}_{\RR\setminus\{(a_n)\}}}+\sum_{n=1}^\infty s_n\delta_{a_n}
+          $$
+  \end{enumerate}
+\end{res}
+\end{document}
