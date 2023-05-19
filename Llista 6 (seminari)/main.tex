@@ -1,0 +1,186 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[intlimits]{esint}
+\usepackage[left=1.5cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[catalan]{babel}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{fancyhdr}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}} % set of natural numbers
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}} % set of integers
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}} % set of rationals
+\newcommand{\RR}{\ensuremath{\mathbb{R}}} % set of real numbers
+\newcommand{\CC}{\ensuremath{\mathbb{C}}} % set of complex numbers
+\newcommand{\KK}{\ensuremath{\mathbb{K}}} % a general field
+
+\newcommand{\vf}[1]{\boldsymbol{\mathrm{#1}}} % math style for vectors and matrices and vector-values functions (previously it was \*vb{#1} but this does not apply to greek letters)
+\newcommand{\ii}{\mathrm{i}} % imaginary unit
+\renewcommand{\O}{\mathrm{O}} % big O-notation
+\DeclareMathOperator{\supp}{\mathrm{supp}} % support
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{exercici}{Exercici}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+\theoremstyle{remark}
+\newtheorem*{res}{Resolució}
+\DeclareDocumentCommand\derivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+    \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}
+    {
+        \IfNoValueTF{#5}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}}}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}} #3}{\diffd #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % differential operator
+\DeclareDocumentCommand\partialderivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+  \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}{
+      \IfNoValueTF{#5}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}}}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}} #3}{\partial #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % partial differential operator
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+
+%%% HARMONIC ANALYSIS
+\newcommand{\F}{\mathcal{F}} % Fourier transform operator
+\renewcommand{\pv}{\mathrm{p.v.}} % Cauchy principal value
+
+% \renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
+
+\renewcommand{\exp}[1]{\mathrm{e}^{#1}} % exponential function
+\DeclareMathOperator*{\im}{Im}
+\DeclareMathOperator*{\sgn}{sgn}
+
+\setlength\multlinegap{0pt} % disable the margins on \begin{multline} command.
+  \allowdisplaybreaks
+
+
+\title{\bfseries\Large Llista de problemes 6 (Seminari)}
+
+\author{Víctor Ballester Ribó\\NIU: 1570866}
+\date{\parbox{\linewidth}{\centering
+  Anàlisi Harmònica\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Maig de 2023}}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyhfoffset[L]{1cm}
+  \fancyhfoffset[R]{1cm}
+  \rhead{NIU: 1570866}
+  \lhead{Víctor Ballester}
+  \cfoot{\thepage}
+  %\setlength{\headheight}{13.6pt}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+\begin{exercici}\hfill
+  \begin{enumerate}
+    \item Calculeu la transformada de Fourier de la distribució $\partial^\alpha\delta$, $\alpha\in{(\NN\cup\{0\})}^n$.
+    \item Calculeu $\langle \widehat{P},\varphi\rangle $, on $P(x)=x^2-2x +1$.
+    \item Calculeu $\langle \widehat{P},\varphi\rangle $, on $P(x)$ és un polinomi de $\RR^n$.
+  \end{enumerate}
+\end{exercici}
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Tenim que:
+          $$
+            \langle \widehat{\partial^\alpha\delta}, \varphi\rangle = \langle {(2\pi\ii\xi)}^\alpha\widehat\delta, {\varphi}\rangle = \langle {(2\pi\ii\xi)}^\alpha, {\varphi}\rangle\implies\widehat{\partial^\alpha\delta}= {(2\pi\ii\xi)}^\alpha
+          $$
+          ja que $\widehat{\delta}=1$.
+    \item Tenim que:
+          $$
+            \langle \widehat{P},\varphi\rangle = \langle P,\widehat{\varphi}\rangle = \left\langle \frac{{(2\pi\ii x)}^2}{{(2\pi\ii)}^2}-2\frac{{(2\pi\ii x)}}{{(2\pi\ii)}}+1,\widehat\varphi \right\rangle =\left\langle \frac{\widehat{\delta''}}{{(2\pi\ii)}^2}-2\frac{\widehat{\delta'}}{{(2\pi\ii)}}+\widehat\delta,\widehat\varphi \right\rangle=\left\langle \frac{{\delta''}}{{(2\pi\ii)}^2}-2\frac{{\delta'}}{{(2\pi\ii)}}+\delta,\F^2\varphi \right\rangle
+          $$
+          on hem utilitzat l'apartat anterior en la tercera igualtat. Ara bé, com que les deltes centrades en el 0 són simètriques respecte tenim que l'última igualtat és igual a:
+          $$
+            \left\langle \frac{{\delta''}}{{(2\pi\ii)}^2}-2\frac{{\delta'}}{{(2\pi\ii)}}+\delta,\varphi \right\rangle
+          $$
+          Per tant, $\widehat{P}= \frac{{\delta''}}{{(2\pi\ii)}^2}-2\frac{{\delta'}}{{(2\pi\ii)}}+\delta$.
+    \item Sigui $P(x)=\sum_{\abs{\alpha}\leq n}a_\alpha x^\alpha$. Tenim que:
+          \begin{multline*}
+            \langle\widehat{P}, \varphi\rangle=\sum_{\abs{\alpha}\leq n}a_\alpha \langle x^\alpha, \widehat{\varphi}\rangle=\sum_{\abs{\alpha}\leq n}a_\alpha \left\langle \frac{{(2\pi\ii x)}^\alpha}{{(2\pi\ii)}^\alpha}, \widehat\varphi\right\rangle=\sum_{\abs{\alpha}\leq n}\frac{a_\alpha}{{(2\pi\ii)}^\alpha} \left\langle \widehat{\partial^\alpha\delta}, \widehat\varphi\right\rangle=\sum_{\abs{\alpha}\leq n}\frac{a_\alpha}{{(2\pi\ii)}^\alpha} \left\langle {\partial^\alpha\delta},\varphi\right\rangle=\\=\left\langle \sum_{\abs{\alpha}\leq n}\frac{a_\alpha}{{(2\pi\ii)}^\alpha} {\partial^\alpha\delta},\varphi\right\rangle
+          \end{multline*}
+          on en la penúltima igualtat hem fet servir la simetria respecte el 0 de la $\delta$. Per tant: $$\widehat{P}=\sum_{\abs{\alpha}\leq n}\frac{a_\alpha}{{(2\pi\ii)}^\alpha} {\partial^\alpha\delta}$$
+  \end{enumerate}
+\end{res}
+\begin{exercici}
+  Calculeu les transformades de Fourier de les distribucions temperades $T_1=\pv\left(\frac{1}{x}\right)$, $T_2=\sgn(x)$ i $T_3=x^2\sin(2\pi x)$.
+\end{exercici}
+\begin{res}
+  Calculem $\widehat{T_1}$. De teoria sabem que $\widehat{\vf{1}_{(0,\infty)}}=\frac{1}{2\pi\ii} \pv\left(\frac{1}{x}\right)+\frac{1}{2}\delta$. Per tant, com que $\F^2(\vf{1}_{(0,\infty)})=\vf{1}_{(-\infty,0)}$, tenim que:
+  $$
+    \widehat{\pv\left(\frac{1}{x}\right)}=\pi\ii (2\F^2(\vf{1}_{(0,\infty)})-\widehat\delta)=\pi\ii (2\vf{1}_{(-\infty,0)}-1)=-\pi\ii\sgn
+  $$
+  Fem ara $\widehat{T_2}$. Tenim que si $\varphi\in \mathcal{S}(\RR)$:
+  \begin{multline*}
+    \langle\widehat{\sgn(x)},\varphi\rangle=\frac{-1}{\pi\ii}\left\langle\F^2\left(\pv\left(\frac{1}{x}\right)\right),\varphi\right\rangle=\frac{-1}{\pi\ii}\left\langle\pv\left(\frac{1}{x}\right),\F^2\varphi\right\rangle=\frac{-1}{\pi\ii}\left\langle\pv\left(\frac{1}{x}\right),\varphi(-x)\right\rangle=\\=\frac{-1}{\pi\ii}\int_0^\infty \frac{\varphi(-x)-\varphi(x)}{x}\dd{x}=\frac{1}{\pi\ii}\int_0^\infty \frac{\varphi(x)-\varphi(-x)}{x}\dd{x}=\left\langle \frac{\pv\left(\frac{1}{x}\right)}{\pi\ii},\varphi\right\rangle
+  \end{multline*}
+  Per tant, $\widehat{\sgn(x)}=\frac{\pv\left(\frac{1}{x}\right)}{\pi\ii}$. Finalment, calculem $\widehat{T_3}$. Tenim que:
+  \begin{multline*}
+    \langle \F(x^2\sin(2\pi x)),\varphi\rangle=\left\langle \F\left(\frac{{(-2\pi\ii x)}^2}{{(-2\pi\ii)}^2}\sin(2\pi x)\right),\varphi\right\rangle=\frac{-1}{4\pi^2}\left\langle {(\F(\sin(2\pi x)))}'',\varphi\right\rangle =\frac{-1}{8\pi^2\ii}\left\langle \F(\exp{2\pi\ii x}-\exp{-2\pi\ii x}),\varphi''\right\rangle =\\
+    =\frac{-1}{8\pi^2\ii}\left\langle \F^2(\delta_{-1})-\F^2(\delta_{1}),\varphi''\right\rangle =\frac{-1}{8\pi^2\ii}\left\langle \delta_{1}-\delta_{-1},\varphi''\right\rangle =\frac{-1}{8\pi^2\ii}\left\langle {\delta_{1}}''-{\delta_{-1}}'',\varphi\right\rangle
+  \end{multline*}
+  on en la quarta igualtat hem fet servir que $\widehat{\delta_a}=\exp{-2\pi\ii a x}$. Per tant, $\widehat{T_3}=\frac{-1}{8\pi^2\ii}\left({\delta_{1}}''-{\delta_{-1}}''\right)$.
+\end{res}
+\begin{exercici}\hfill
+  \begin{enumerate}
+    \item Per $m\geq 1$, sigui $T_m=\frac{{(-1)}^{m-1}}{(m-1)!}\partial^m\log\abs{x}\in \mathcal{D}^*(\RR)$. Demostreu que $x^mT_m=1$.
+    \item Demostreu que si $T\in\mathcal{D}^*(\RR)$ és tal que $x^mT=0$, llavors $T=\sum_{j= 0}^{m-1}C_j\partial^j\delta$.
+    \item Deduïu que, en general, si $x^mT=1$, llavors $T=T_m+\sum_{j= 0}^{m-1}C_j\partial^j\delta $.
+  \end{enumerate}
+\end{exercici}
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Ho fem per inducció sobre $m$. El cas $m=1$, ja el sabem perquè ${(\log \abs{x})}'=\pv\left(\frac{1}{x}\right)$. Suposem que ho tenim per $m-1$. Aleshores:
+          $$
+            x^mT_m=x^m\frac{(-1)}{m-1}\partial T_{m-1}=\frac{1}{1-m} [\partial (x^m T_{m-1})-mx^{m-1}T_{m-1}]=\frac{1}{1-m} [\partial (x\cdot 1)-m]= 1
+          $$
+          on en la segona igualtat hem fet servir la regla del producte: $\partial(x^mT_{m-1})=x^m\partial T_{m-1}+mx^{m-1}T_{m-1}$.
+    \item És clar que $x\delta^{(k)}=0$ $\forall k\in\NN\cup\{0\}$. Per tant:
+          $$
+            {(x\delta^{(k)})}'=\delta^{(k)}+x\delta^{(k+1)}=0\implies \delta^{(k)}=-x\delta^{(k+1)}
+          $$
+          A més, recordem que si $xS=0$ per $S\in\mathcal{D}^*(\RR)$, aleshores $S=C\delta$. Així doncs, si $T$ és tal que $x^mT=0$, aleshores:
+          \begin{multline*}
+            x^mT=x(x^{m-1}T)=0\implies x^{m-1}T=C_1\delta\implies x^{m-1}T+C_1x\delta'=0\implies x(x^{m-2} T+C_1\delta')=0\implies\\\implies x^{m-2} T+C_1\delta'=C_2\delta\implies x(x^{m-3} T -C_1\delta''+C_2\delta')=0\implies x^{m-3} T-C_1\delta''+C_2\delta'=C_3\delta\implies \cdots\implies\\\implies T = \sum_{j= 0}^{m-1}\tilde{C_j}\partial^j\delta
+          \end{multline*}
+    \item Dels apartats anteriors deduïm que $x^mT=1$ aleshores:
+          $$
+            x^m(T-T_m)=0\implies T-T_m=\sum_{j= 0}^{m-1}C_j\partial^j\delta
+          $$
+  \end{enumerate}
+\end{res}
+\end{document}

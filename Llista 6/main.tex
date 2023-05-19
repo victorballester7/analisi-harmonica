@@ -1,0 +1,167 @@
+\documentclass[10pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsthm, amsmath, mathtools, amssymb}
+\usepackage[intlimits]{esint}
+\usepackage[left=1.5cm,right=1.5cm,top=2cm,bottom=2cm]{geometry}
+\usepackage[colorlinks,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+\usepackage[catalan]{babel}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{physics}
+\usepackage{fancyhdr}
+
+\newcommand{\NN}{\ensuremath{\mathbb{N}}} % set of natural numbers
+\newcommand{\ZZ}{\ensuremath{\mathbb{Z}}} % set of integers
+\newcommand{\QQ}{\ensuremath{\mathbb{Q}}} % set of rationals
+\newcommand{\RR}{\ensuremath{\mathbb{R}}} % set of real numbers
+\newcommand{\CC}{\ensuremath{\mathbb{C}}} % set of complex numbers
+\newcommand{\KK}{\ensuremath{\mathbb{K}}} % a general field
+
+\newcommand{\vf}[1]{\boldsymbol{\mathrm{#1}}} % math style for vectors and matrices and vector-values functions (previously it was \*vb{#1} but this does not apply to greek letters)
+\newcommand{\ii}{\mathrm{i}} % imaginary unit
+\renewcommand{\O}{\mathrm{O}} % big O-notation
+\DeclareMathOperator{\supp}{\mathrm{supp}} % support
+
+\newtheorem{theorem}{Teorema}
+\newtheorem{exercici}{Exercici}
+\newtheorem{prop}{Proposició}
+\theoremstyle{definition}
+\newtheorem{definition}{Definició}
+\theoremstyle{remark}
+\newtheorem*{res}{Resolució}
+\DeclareDocumentCommand\derivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+    \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}
+    {
+        \IfNoValueTF{#5}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}}}
+        {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}}}{\diffd #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\diffd \IfNoValueTF{#2}{}{^{#2}} #3}{\diffd #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % differential operator
+\DeclareDocumentCommand\partialderivative{ s o m g d() }{ 
+  % Total derivative
+  % s: star for \flatfrac flat derivative
+  % o: optional n for nth derivative
+  % m: mandatory (x in df/dx)
+  % g: optional (f in df/dx)
+  % d: long-form d/dx(...)
+  \IfBooleanTF{#1}
+    {\let\fractype\flatfrac}
+    {\let\fractype\frac}
+    \IfNoValueTF{#4}{
+      \IfNoValueTF{#5}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}}}
+      {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}}}{\partial #3\IfNoValueTF{#2}{}{^{#2}}} \argopen(#5\argclose)}
+    }
+    {\fractype{\partial \IfNoValueTF{#2}{}{^{#2}} #3}{\partial #4\IfNoValueTF{#2}{}{^{#2}}}\IfValueT{#5}{(#5)}}
+} % partial differential operator
+
+\titleformat{\section}
+  {\normalfont\fontsize{11}{15}\bfseries}{\thesection}{1em}{}
+
+
+%%% HARMONIC ANALYSIS
+\newcommand{\F}{\mathcal{F}} % Fourier transform operator
+\renewcommand{\pv}{\mathrm{p.v.}} % Cauchy principal value
+
+% \renewcommand{\theenumi}{\textbf{\arabic{enumi}}}
+\renewcommand{\theenumi}{\alph{enumi}}
+\renewcommand{\theenumiii}{\roman{enumiii}}
+
+\renewcommand{\exp}[1]{\mathrm{e}^{#1}} % exponential function
+\DeclareMathOperator*{\im}{Im}
+\DeclareMathOperator*{\sgn}{sgn}
+
+\setlength\multlinegap{0pt} % disable the margins on \begin{multline} command.
+  \allowdisplaybreaks
+
+
+\title{\bfseries\Large Llista de problemes 6}
+
+\author{Víctor Ballester Ribó\\NIU: 1570866}
+\date{\parbox{\linewidth}{\centering
+  Anàlisi Harmònica\endgraf
+  Grau en Matemàtiques\endgraf
+  Universitat Autònoma de Barcelona\endgraf
+  Maig de 2023}}
+  \pagestyle{fancy}
+  \fancyhf{}
+  \fancyhfoffset[L]{1cm}
+  \fancyhfoffset[R]{1cm}
+  \rhead{NIU: 1570866}
+  \lhead{Víctor Ballester}
+  \cfoot{\thepage}
+  %\setlength{\headheight}{13.6pt}
+
+\setlength{\parindent}{0pt}
+\begin{document}
+\selectlanguage{catalan}
+\maketitle
+\setcounter{exercici}{1}
+\begin{exercici}
+  Sigui $p(x)$ un polinomi. Llavors existeix una distribució $T\in\mathcal{D}^*(\RR)$ tal que $p(x)T=1$.
+\end{exercici}
+\begin{res}
+  Recordem d'un seminari anterior les distribucions $T_m=\frac{{(-1)}^{m-1}}{(m-1)!}\partial^m\log\abs{x}\in \mathcal{D}^*(\RR)$ que satisfan $x^mT_m=1$, $m\in\NN$. Fent una translació tenim que les distribucions $S_{m,\alpha}:=\frac{{(-1)}^{m-1}}{(m-1)!}\partial^m\log\abs{x-\alpha}$ satisfan ${(x-\alpha)}^mS_m=1$ per a tot $\alpha\in\RR$.
+  Aleshores, fent la descomposició per fraccions simples de $p(x)$ tenim que
+  $$
+    \frac{1}{p(x)} = \sum_{i=0}^n \frac{q_i(x)}{{(x-\alpha_i)}^{n_i}}
+  $$
+  per a certs polinomis $q_i$ tals que $\deg q_i<n_i$. Ara definim $T:= \sum_{i=0}^n q_i(x)S_{n_i,\alpha_i}$. Aleshores tenim que:
+  $$
+    p(x)T=p(x)\sum_{i=0}^n q_i(x)S_{n_i,\alpha_i} =p(x) \sum_{i=0}^n \frac{q_i(x)}{{(x-\alpha_i)}^{n_i}} =1
+  $$
+\end{res}
+\begin{exercici}
+  Sigui $T\in \mathcal{D}^*(\RR)$. El \emph{suport} de $T$ es defineix com la intersecció de tots els tancats $K$ amb la propietat següent: si $\varphi\in\mathcal{D}(\RR)$ té suport a $\RR^n \setminus K$, aleshores $\langle T,\varphi\rangle=0$.
+
+  Considerem l'espai $\mathcal{E}(\RR^n):=\mathcal{C}^\infty(\RR^n)$ i el seu dual $\mathcal{E}^*(\RR^n)$. És fàcil veure que $T\in \mathcal{E}^*(\RR^n)$ si i només si existeixen $C>0$ i $N, m\in\NN$ tals que
+  $$
+    \abs{\langle T,\varphi\rangle}\leq C\sum_{\abs{\alpha}\leq m}\sup_{\abs{x}\leq N}\abs{(\partial^\alpha\varphi)(x)}\quad\text{per a tota }\varphi\in\mathcal{E}(\RR^n).
+  $$
+  \begin{enumerate}
+    \item Demostreu que $T$ és una distribució amb suport compacte si i només si $T\in \mathcal{E}^*(\RR^n)$.
+    \item Si $T\in \mathcal{S}^*(\RR^n)$ està suportada en un punt $x_0$, llavors:
+          $$
+            T=\sum_{\abs{\alpha}\leq k}a_\alpha\partial^\alpha\delta_{x_0}
+          $$
+    \item Deduïu que si $T\in \mathcal{S}^*(\RR^n)$ és tal que $\widehat{T}$ està suportada en $\xi_0$, llavors $T$ és combinació lineal finita de funcions ${(-2\pi\ii\xi)}^\alpha\exp{2\pi i\langle \xi,\xi_0\rangle}$. En particular, si $\widehat{T}$ està suportada a l'origen, llavors $T$ és un polinomi.
+    \item Deduïu que si $u\in \mathcal{S}^*(\RR^n)$ és tal que $\Delta u=0$, llavors $u$ és un polinomi.
+  \end{enumerate}
+\end{exercici}
+\begin{res}\hfill
+  \begin{enumerate}
+    \item Suposem primer que $T$ és una distribució amb suport compacte $K$. Per definició si $\varphi\in \mathcal{E}(\RR^n)$ té suport a $\RR^n\setminus K$, tenim que $\langle T,\varphi\rangle =0$. Ara per a una $\varphi\in \mathcal{E}(\RR^n)$ general, considerem una funció $\psi\in \mathcal{D}(\RR^n)$ tal que $\psi(x)=1$ per a tot $x\in K$. Aleshores, per a tota $\varphi\in \mathcal{E}(\RR^n)$ tenim que:
+          $$
+            \abs{\langle T,\varphi\rangle} = \abs{\langle T,\varphi\psi\rangle + \langle T,\varphi(1-\psi)\rangle} = \abs{\langle T,\varphi\psi\rangle}\leq C \sum_{\abs{\alpha}\leq m}\sup_{\abs{x}\leq N}\abs{(\partial^\alpha(\varphi\psi))(x)}
+          $$
+          per certes $C>0$, $m,N\in\NN$. La segona igualtat es deu al fet que $\varphi(1-\psi)$ té support contingut en $\RR^n\setminus K$ i l'última desigualtat bé del fet que $\varphi\psi\in\mathcal{D}(\RR^n)$ i, per tant, sobre aquestes funcions tenim continuïtat.
+
+          Ara suposem que $T\in \mathcal{E}^*(\RR^n)$. Com que $\mathcal{D}(\RR^n)\subset \mathcal{E}(\RR^n)$, tenim que $\mathcal{E}^*(\RR^n)\subset \mathcal{D}^*(\RR^n)$. Per tant, $T$ és una distribució i a més el seu suport $K$ és tancat, perquè és intersecció de tancats. Cal veure que $K$ és acotat. Si no ho fos, aleshores podríem trobar una successió $(x_n)\in K$ tal que $x_n\to \infty$.  Per a construir aquesta $\varphi$, considerem una $(\phi_n)\in\mathcal{S}(\RR^n)$
+
+          aleshores podríem trobar una $\varphi\in\mathcal{E}(\RR^n)$ que tendís a $\infty$ dins de $K$, i per tant, tindríem que $T$ no podria estar en $\mathcal{E}^*(\RR^n)$, que és una contradicció.
+    \item Tenim que:
+          $$
+            \langle T,\varphi\rangle = \langle T, \varphi \vf{1}_{\{x_0\}}+(1-  \vf{1}_{\{x_0\}})\varphi\rangle = \langle T, \varphi \vf{1}_{\{x_0\}}\rangle
+          $$
+    \item De l'apartat anterior tenim que:
+          $$
+            \widehat{T} = \sum_{\abs{\alpha}\leq k}c_\alpha\widehat{\partial^\alpha\delta_{\xi_0}} = \sum_{\abs{\alpha}\leq k}c_\alpha{(2\pi\ii\xi)}^\alpha\widehat{\delta_{\xi_0}}= \sum_{\abs{\alpha}\leq k}c_\alpha{(2\pi\ii\xi)}^\alpha\exp{-2\pi i \xi\cdot\xi_0}
+          $$
+          En particular si $\xi_0=0$, aleshores $\widehat{T} = \sum_{\abs{\alpha}\leq k}c_\alpha{(2\pi\ii\xi)}^\alpha$, que és un polinomi en $\xi$.
+    \item Fent transformada de Fourier a l'equació obtenim:
+          $$
+            0=\widehat{\Delta u} =\sum_{i=0}^n \widehat{{\partial_i}^2 u} = \sum_{i=0}^n {(2\pi\ii\xi_i)}^2\widehat{u} = -4\pi^2\abs{\xi}^2\widehat{u}
+          $$
+  \end{enumerate}
+\end{res}
+\end{document}

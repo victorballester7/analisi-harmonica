@@ -129,7 +129,7 @@
   $$
 \end{res}
 \begin{exercici}
-  Proveu que tota distribució té una primitiva. És a dir, donada $T\in\mathcal{D}(\RR)$, $\exists S\in\mathcal{D}(\RR)$ tal que $T=S'$.
+  Proveu que tota distribució té una primitiva. És a dir, donada $T\in\mathcal{D}^*(\RR)$, $\exists S\in\mathcal{D}^*(\RR)$ tal que $T=S'$.
 \end{exercici}
 \begin{res}
   Sigui $\phi\in\mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty}\phi(x) \dd{x}=0$. Aleshores ja vam veure a la llista passada que $\exists\psi\in \mathcal{D}(\RR)$ tal que $\phi=\psi'$. Per tant, triem $S$ tal que:
@@ -143,11 +143,11 @@
   Ara sigui $\varphi\in\mathcal{D}(\RR)$ qualsevol i sigui $\omega\in \mathcal{D}(\RR)$ tal que $\int_{-\infty}^{+\infty}\omega(x) \dd{x}=1$.
   Aleshores tenim que $\phi:=\varphi-\int_{-\infty}^{+\infty}\varphi(x) \dd{x}\omega\in\mathcal{D}(\RR)$ i integra 0. Per tant, pel vist anteriorment, si $\psi(t)=\int_{-\infty}^{t}\varphi(x)\dd{x}-\int_{-\infty}^{+\infty} \varphi(x)\dd{x}\int_{-\infty}^{t}\omega(x)\dd{x}$, aleshores $\psi\in\mathcal{D}(\RR)$ i podem definir $S$ com:
   $$
-    \langle S,\varphi \rangle := -\left\langle T, \int_{-\infty}^{\cdot}\varphi(x)\dd{x}-\int_{-\infty}^{+\infty} \varphi(x)\dd{x}\int_{-\infty}^{\cdot}\omega(x)\dd{x} \right\rangle  +\int_{-\infty}^{+\infty}\varphi(x)\dd{x}\langle T,\omega\rangle
+    \langle S,\varphi \rangle := -\left\langle T, \int_{-\infty}^{\cdot}\varphi(x)\dd{x}-\int_{-\infty}^{+\infty} \varphi(x)\dd{x}\int_{-\infty}^{\cdot}\omega(x)\dd{x} \right\rangle
   $$
   Observem que tenim:
   $$
-    \langle S',\varphi \rangle = -\langle S,\varphi' \rangle = \left\langle T,\varphi-\int_{-\infty}^{+\infty} \varphi'(x)\dd{x}\omega \right\rangle +\int_{-\infty}^{+\infty}\varphi'(x)\dd{x}\langle T,\omega\rangle= \langle T,\varphi \rangle
+    \langle S',\varphi \rangle = -\langle S,\varphi' \rangle = \left\langle T,\varphi-\int_{-\infty}^{+\infty} \varphi'(x)\dd{x}\int_{-\infty}^{\cdot}\omega(x)\dd{x} \right\rangle= \langle T,\varphi \rangle
   $$
 \end{res}
 \begin{exercici}
@@ -174,7 +174,7 @@
   $$
     \varphi(x)=\exp{\frac{-x^2}{\sqrt{1+x^2}}}
   $$
-  Tenim que $\varphi\in\mathcal{D}(\RR)$ per ser composició de funcions de $\mathcal{D}(\RR)$. A més, com que $\varphi\sim \exp{-\abs{x}}$ per $\abs{x}\gg1$, tenim que $\varphi\in\mathcal{S}(\RR)$. D'altra banda:
+  Tenim que $\varphi\in\mathcal{C}^\infty(\RR)$ per ser composició de funcions de $\mathcal{C}^\infty(\RR)$. A més, com que $\varphi\sim \exp{-\abs{x}}$ per $\abs{x}\gg1$, tenim que $\varphi\in\mathcal{S}(\RR)$. D'altra banda:
   $$
     \langle T_f, \varphi\rangle=\int_{-\infty}^\infty\exp{x-\frac{x^2}{\sqrt{1+x^2}}}\dd{x}\geq \int_{0}^\infty\exp{x-\frac{x^2}{\sqrt{1+x^2}}}\dd{x}
   $$
@@ -205,11 +205,11 @@
           on la constant $C$ és la que surt de la hipòtesi de $\alpha_n$. Per tant, $T$ és lineal i contínua.
           Calculem la transformada de Fourier de $T$:
           $$
-            \langle\widehat{T},\varphi\rangle=\langle T,\widehat{\varphi}\rangle=\sum_{n\in\ZZ}\alpha_n\widehat{\varphi}(na)=\sum_{n\in\ZZ}\alpha_n\int_{-\infty}^\infty\exp{-2\pi i na x}\varphi(x)\dd{x}=\int_{-\infty}^\infty\sum_{n\in\ZZ}\alpha_n\exp{-2\pi i na x}\varphi(x)\dd{x}
+            \langle\widehat{T},\varphi\rangle=\langle T,\widehat{\varphi}\rangle=\sum_{n\in\ZZ}\alpha_n\widehat{\varphi}(na)=\sum_{n\in\ZZ}\alpha_n\int_{-\infty}^\infty\exp{-2\pi i na x}\varphi(x)\dd{x}
           $$
-          on hem pogut intercanviar la integral pel sumatori perquè $f_n(x):=\alpha_n\exp{-2\pi i na x}\varphi(x)$ és integrable (perquè $\varphi\in\mathcal{S}(\RR)$) i $\sum_{n\in \ZZ}f_n(x)$ convergeix uniformement (per M-Weierstra\ss). Per tant, $\widehat{T}$ és la distribució tal que $\forall\varphi\in \mathcal{S}(\RR)$:
+          Per tant, $\widehat{T}$ és la distribució tal que $\forall\varphi\in \mathcal{S}(\RR)$:
           $$
-            \varphi\overset{\widehat{T}}\longmapsto \int_{-\infty}^\infty\sum_{n\in\ZZ}\alpha_n\exp{-2\pi i na x}\varphi(x)\dd{x}
+            \varphi\overset{\widehat{T}}\longmapsto \sum_{n\in\ZZ}\alpha_n\int_{-\infty}^\infty\exp{-2\pi i na x}\varphi(x)\dd{x}
           $$
   \end{enumerate}
 \end{res}
