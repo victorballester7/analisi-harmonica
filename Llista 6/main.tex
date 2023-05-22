@@ -114,20 +114,20 @@
   Recordem d'un seminari anterior les distribucions $T_m=\frac{{(-1)}^{m-1}}{(m-1)!}\partial^m\log\abs{x}\in \mathcal{D}^*(\RR)$ que satisfan $x^mT_m=1$, $m\in\NN$. Fent una translació tenim que les distribucions $S_{m,\alpha}:=\frac{{(-1)}^{m-1}}{(m-1)!}\partial^m\log\abs{x-\alpha}$ satisfan ${(x-\alpha)}^mS_m=1$ per a tot $\alpha\in\RR$.
   Aleshores, fent la descomposició per fraccions simples de $p(x)$ tenim que
   $$
-    \frac{1}{p(x)} = \sum_{i=0}^n \frac{q_i(x)}{{(x-\alpha_i)}^{n_i}}
+    \frac{1}{p(x)} = \sum_{i=0}^n \frac{c_i}{{(x-\alpha_i)}^{n_i}}+\sum_{i=0}^{m} \frac{q_i(x)}{r_i(x)^{m_i}}
   $$
-  per a certs polinomis $q_i$ tals que $\deg q_i<n_i$. Ara definim $T:= \sum_{i=0}^n q_i(x)S_{n_i,\alpha_i}$. Aleshores tenim que:
+  per a certs polinomis $q_i$ i certes constants $c_i$. Els polinomis $r_i$ representen els factors irreductibles de $p$, i per tant, com que no s'anu\lgem en $\RR$, $\frac{1}{{r_i(x)}^{m_i}}\in L_\mathrm{loc}^1(\RR)$. Ara definim $T:= \sum_{i=0}^n c_iS_{n_i,\alpha_i} +\sum_{i=0}^{m} \frac{q_i(x)}{r_i(x)^{m_i}}$, que és una distribució ja que és una combinació lineal de distribucions. Tenim que:
   $$
-    p(x)T=p(x)\sum_{i=0}^n q_i(x)S_{n_i,\alpha_i} =p(x) \sum_{i=0}^n \frac{q_i(x)}{{(x-\alpha_i)}^{n_i}} =1
+    p(x)T=p(x)\left(\sum_{i=0}^n c_iS_{n_i,\alpha_i}+\sum_{i=0}^{m} \frac{q_i(x)}{r_i(x)^{m_i}}\right) =p(x) \left(\sum_{i=0}^n \frac{c_i}{{(x-\alpha_i)}^{n_i}}+\sum_{i=0}^{m} \frac{q_i(x)}{r_i(x)^{m_i}}\right) =1
   $$
 \end{res}
 \begin{exercici}
   Sigui $T\in \mathcal{D}^*(\RR)$. El \emph{suport} de $T$ es defineix com la intersecció de tots els tancats $K$ amb la propietat següent: si $\varphi\in\mathcal{D}(\RR)$ té suport a $\RR^n \setminus K$, aleshores $\langle T,\varphi\rangle=0$.
 
   Considerem l'espai $\mathcal{E}(\RR^n):=\mathcal{C}^\infty(\RR^n)$ i el seu dual $\mathcal{E}^*(\RR^n)$. És fàcil veure que $T\in \mathcal{E}^*(\RR^n)$ si i només si existeixen $C>0$ i $N, m\in\NN$ tals que
-  $$
+  \begin{equation}\label{eq:1}
     \abs{\langle T,\varphi\rangle}\leq C\sum_{\abs{\alpha}\leq m}\sup_{\abs{x}\leq N}\abs{(\partial^\alpha\varphi)(x)}\quad\text{per a tota }\varphi\in\mathcal{E}(\RR^n).
-  $$
+  \end{equation}
   \begin{enumerate}
     \item Demostreu que $T$ és una distribució amb suport compacte si i només si $T\in \mathcal{E}^*(\RR^n)$.
     \item Si $T\in \mathcal{S}^*(\RR^n)$ està suportada en un punt $x_0$, llavors:
@@ -140,28 +140,62 @@
 \end{exercici}
 \begin{res}\hfill
   \begin{enumerate}
-    \item Suposem primer que $T$ és una distribució amb suport compacte $K$. Per definició si $\varphi\in \mathcal{E}(\RR^n)$ té suport a $\RR^n\setminus K$, tenim que $\langle T,\varphi\rangle =0$. Ara per a una $\varphi\in \mathcal{E}(\RR^n)$ general, considerem una funció $\psi\in \mathcal{D}(\RR^n)$ tal que $\psi(x)=1$ per a tot $x\in K$. Aleshores, per a tota $\varphi\in \mathcal{E}(\RR^n)$ tenim que:
+    \item Suposem primer que $T$ és una distribució amb suport compacte $K$. Per definició si $\varphi\in \mathcal{E}(\RR^n)$ té suport a $\RR^n\setminus K$, tenim que $\langle T,\varphi\rangle =0$. Ara considerem una funció $\psi\in \mathcal{D}(\RR^n)$ tal que $\psi(x)=1$ per a tot $x\in K$. Aleshores, per a tota $\varphi\in \mathcal{E}(\RR^n)$ tenim que:
           $$
-            \abs{\langle T,\varphi\rangle} = \abs{\langle T,\varphi\psi\rangle + \langle T,\varphi(1-\psi)\rangle} = \abs{\langle T,\varphi\psi\rangle}\leq C \sum_{\abs{\alpha}\leq m}\sup_{\abs{x}\leq N}\abs{(\partial^\alpha(\varphi\psi))(x)}
+            \abs{\langle T,\varphi\rangle} = \abs{\langle T,\varphi\psi\rangle + \langle T,\varphi(1-\psi)\rangle} = \abs{\langle T,\varphi\psi\rangle}\leq C \sum_{\abs{\alpha}\leq m}\sup_{x\in Q}\abs{(\partial^\alpha(\varphi\psi))(x)}
           $$
-          per certes $C>0$, $m,N\in\NN$. La segona igualtat es deu al fet que $\varphi(1-\psi)$ té support contingut en $\RR^n\setminus K$ i l'última desigualtat bé del fet que $\varphi\psi\in\mathcal{D}(\RR^n)$ i, per tant, sobre aquestes funcions tenim continuïtat.
+          per a tot compacte $Q\subseteq \Omega$ i certes constants $C>0$, $m\in\NN$. La segona igualtat es deu al fet que $\varphi(1-\psi)$ té suport contingut en $\RR^n\setminus K$ i la desigualtat bé del fet que $\varphi\psi\in\mathcal{D}(\RR^n)$ i, per tant, sobre aquestes funcions tenim continuïtat. Si triem $Q=K$ tenim que $\sup_{x\in Q}\abs{(\partial^\alpha(\varphi\psi))(x)}= \sup_{x\in K}\abs{(\partial^\alpha\varphi)(x)}$ ja que $\varphi\psi=\varphi$ a $K$. Finalment, triant un $N\in\NN$ suficientment gran perquè $K\subseteq \overline{B(0,N)}$ obtenim el resultat: $$\abs{\langle T,\varphi\rangle}\leq C\sum_{\abs{\alpha}\leq m} \sup_{x\in K}\abs{(\partial^\alpha\varphi)(x)}\leq C\sum_{\abs{\alpha}\leq m}\sup_{\abs{x}\leq N}\abs{(\partial^\alpha\varphi)(x)}$$
 
-          Ara suposem que $T\in \mathcal{E}^*(\RR^n)$. Com que $\mathcal{D}(\RR^n)\subset \mathcal{E}(\RR^n)$, tenim que $\mathcal{E}^*(\RR^n)\subset \mathcal{D}^*(\RR^n)$. Per tant, $T$ és una distribució i a més el seu suport $K$ és tancat, perquè és intersecció de tancats. Cal veure que $K$ és acotat. Si no ho fos, aleshores podríem trobar una successió $(x_n)\in K$ tal que $x_n\to \infty$.  Per a construir aquesta $\varphi$, considerem una $(\phi_n)\in\mathcal{S}(\RR^n)$
 
-          aleshores podríem trobar una $\varphi\in\mathcal{E}(\RR^n)$ que tendís a $\infty$ dins de $K$, i per tant, tindríem que $T$ no podria estar en $\mathcal{E}^*(\RR^n)$, que és una contradicció.
-    \item Tenim que:
+          Ara suposem que $T\in \mathcal{E}^*(\RR^n)$. Com que $\mathcal{D}(\RR^n)\subset \mathcal{E}(\RR^n)$, tenim que $\mathcal{E}^*(\RR^n)\subset \mathcal{D}^*(\RR^n)$. Per tant, $T$ és una distribució i a més el seu suport $K$ és tancat, perquè és intersecció de tancats. Cal veure que $K$ és acotat. Del fet que $T\in\mathcal{E}^*(\RR^n)$, tenim que existeixen constants $C>0$, $N,m\in\NN$ tals que es satisfà \eqref{eq:1}. Ara bé, si $K$ no fos acotat, aleshores podríem triar $\varphi\in \mathcal{E}(\RR^n)$ tal que $\supp \varphi \subseteq \RR^n\setminus \overline{B(0, N)}$ i $\abs{\langle T,\varphi\rangle}>0$, ja que si no poguéssim voldria dir que $\supp T\subseteq \overline{B(0, N)}$, que estaria acotat. Però això contradiu \eqref{eq:1} ja que totes les seminormes $\sup_{\abs{x}\leq N}\abs{(\partial^\alpha\varphi)(x)}$ serien 0 perquè $\varphi$ és nu\lgem a dins de $\overline{B(0, N)}$. Amb això hem vist que no només $K$ ha de ser acotat, sinó que ha d'estar contingut en $\overline{B(0,N)}$.
+
+    \item Sigui $\varepsilon>0$, $\varphi\in \mathcal{S}(\RR^n)$ i $\omega\in \mathcal{D}(\RR^n)$ una \emph{bump function} que val 1 en $B(0,1)$ i 0 en $\RR^n\setminus B(0,2)$.
+          Expandint $\varphi$ en sèrie de Taylor centrada a $x_0$ tenim que si $k\in \NN$ (pendent a determinar), aleshores:
           $$
-            \langle T,\varphi\rangle = \langle T, \varphi \vf{1}_{\{x_0\}}+(1-  \vf{1}_{\{x_0\}})\varphi\rangle = \langle T, \varphi \vf{1}_{\{x_0\}}\rangle
+            \varphi(x) = \sum_{\abs{\alpha}\leq k}\frac{1}{\alpha!}\partial^\alpha\varphi(x_0){(x-x_0)}^\alpha + R_{k,\varepsilon}(x)
           $$
-    \item De l'apartat anterior tenim que:
+          on $\displaystyle R_{k,\varepsilon}(x) = \sum_{\abs{\alpha}=k+1}\frac{\partial^\alpha\varphi(x_0+c(x-x_0))}{\alpha!}{(x-x_0)}^\alpha$,
+          amb $c\in(0,1)$ i $\abs{x-x_0}\leq\varepsilon$, és el residu de Taylor. Fixem-nos que si denotem $a_\alpha:=\displaystyle\frac{{(-1)}^\alpha}{\alpha!}\langle T,{(x-x_0)}^\alpha\rangle$, aleshores:
           $$
-            \widehat{T} = \sum_{\abs{\alpha}\leq k}c_\alpha\widehat{\partial^\alpha\delta_{\xi_0}} = \sum_{\abs{\alpha}\leq k}c_\alpha{(2\pi\ii\xi)}^\alpha\widehat{\delta_{\xi_0}}= \sum_{\abs{\alpha}\leq k}c_\alpha{(2\pi\ii\xi)}^\alpha\exp{-2\pi i \xi\cdot\xi_0}
+            \langle T,\varphi\rangle = \sum_{\abs{\alpha}\leq k}a_\alpha{(-1)}^\alpha\partial^\alpha\varphi(x_0) + \langle T,R_{k,\varepsilon}\rangle=\sum_{\abs{\alpha}\leq k}a_\alpha \langle \partial^\alpha\delta_{x_0},\varphi\rangle + \langle T,R_{k,\varepsilon}\rangle
           $$
-          En particular si $\xi_0=0$, aleshores $\widehat{T} = \sum_{\abs{\alpha}\leq k}c_\alpha{(2\pi\ii\xi)}^\alpha$, que és un polinomi en $\xi$.
+          Hem de veure que $\abs{\langle T,R_{k,\varepsilon}\rangle}\overset{\varepsilon\to 0}{\longrightarrow}0$. Definim $\omega_\varepsilon(x):=\omega((x-x_0)/\varepsilon)$, que val 1 en $B(x_0,\varepsilon)$ i 0 en $\RR^n\setminus B(x_0,2\varepsilon)$. Clarament $R_{k,\varepsilon}\in \mathcal{S}(\RR^n)$, i per tant, $R_{k,\varepsilon}\omega_\varepsilon\in \mathcal{S}(\RR^n)$. Per tant:
+          $$
+            \langle T,R_{k,\varepsilon} \rangle = \langle T,R_{k,\varepsilon}\omega_\varepsilon\rangle + \langle T,R_{k,\varepsilon}(1-\omega_\varepsilon)\rangle = \langle T,R_{k,\varepsilon}\omega_\varepsilon\rangle
+          $$
+          ja que $R_{k,\varepsilon}(1-\omega_\varepsilon)$ té suport a $\RR^n\setminus B(x_0,\varepsilon)\subset \RR^n\setminus\{x_0\}$. Usant l'apartat anterior, tenim que $T\in \mathcal{E}^*(\RR^n)$ i, per tant, $\exists C\in\RR$ i $N,m\in\NN$ tals que:
+          $$
+            \abs{\langle T,R_{k,\varepsilon}\omega_\varepsilon\rangle}\leq C\sum_{\abs{\beta}\leq m}\sup_{\abs{x}\leq N}\abs{\partial^\beta (R_{k,\varepsilon}\omega_\varepsilon)(x)} = C\sum_{\abs{\beta}\leq m}\sup_{\substack{\abs{x}\leq N\\ \abs{x-x_0}\leq 2\varepsilon}}\abs{\partial^\beta (R_{k,\varepsilon}\omega_\varepsilon)(x)}
+          $$
+
+          Fent servir la regla de Leibniz per $\beta\in (\NN\cup\{0\})^d$ i usant que $\abs{x-x_0}\leq 2 \varepsilon$ tenim que:
+          $$
+            \abs{\partial^\beta (R_{k,\varepsilon}\omega_\varepsilon)(x)} = \abs{\sum_{\gamma\leq \beta}\binom{\beta}{\gamma}\partial^\gamma \omega_\varepsilon\partial^{\beta-\gamma} R_{k,\varepsilon}}\lesssim\sum_{\gamma\leq \beta} \frac{1}{\varepsilon^{\abs{\gamma}}}\abs{\varepsilon}^{k+1 - (\abs{\beta}-\abs{\gamma})}\lesssim \varepsilon^{k+1-\abs{\beta}}
+          $$
+          on hem usat que $\abs{\partial^{\beta-\gamma} {(x-x_0)}^\alpha}\simeq \abs{x-x_0}^{\abs{\alpha} - (\abs{\beta}-\abs{\gamma})}$ i $\abs{\alpha} = k+1$ i, per tant, $\abs{\partial^{\beta-\gamma}R_{k,\varepsilon}}\lesssim \abs{\varepsilon}^{k+1 - (\abs{\beta}-\abs{\gamma})}$ (també fent Leibniz). Per tant, com que $\abs{\beta} \leq m$, triant $k=m$ tenim que:
+          $$
+            \abs{\langle T,R_{k,\varepsilon}\omega_\varepsilon\rangle}\leq C\sum_{\abs{\beta}\leq m}\sup_{\substack{\abs{x}\leq N\\ \abs{x-x_0}\leq 2\varepsilon}}\abs{\partial^\beta (R_{k,\varepsilon}\omega_\varepsilon)(x)}\lesssim\sum_{\abs{\beta}\leq m}\varepsilon^{m+1-\abs{\beta}}\overset{\varepsilon\to 0}{\longrightarrow}0
+          $$
+    \item De l'apartat anterior tenim que $\displaystyle\widehat{T} = \sum_{\abs{\alpha}\leq k}c_\alpha\partial^\alpha\delta_{\xi_0}$. Prenent $\F^{-1}$ a ambdós costats i usant que
+          $$
+            \F^{-1}({\partial^\alpha\delta_{\xi_0}})= \F^3({\partial^\alpha\delta_{-\xi_0}}) = \F^2({(2\pi\ii\xi)}^\alpha\widehat{\delta_{\xi_0}})= {(-2\pi\ii\xi)}^\alpha\widehat{\delta_{-\xi_0}}={(-2\pi\ii\xi)}^\alpha \exp{2\pi i \xi\cdot\xi_0}
+          $$
+          obtenim:
+          $$
+            T = \sum_{\abs{\alpha}\leq k}c_\alpha\F^{-1}({\partial^\alpha\delta_{\xi_0}}) =\sum_{\abs{\alpha}\leq k}c_\alpha{(-2\pi\ii\xi)}^\alpha\exp{2\pi i \xi\cdot\xi_0}
+          $$
+          En particular si $\xi_0=0$, aleshores ${T} = \sum_{\abs{\alpha}\leq k}c_\alpha{(-2\pi\ii\xi)}^\alpha$, que és un polinomi en $\xi$.
     \item Fent transformada de Fourier a l'equació obtenim:
           $$
             0=\widehat{\Delta u} =\sum_{i=0}^n \widehat{{\partial_i}^2 u} = \sum_{i=0}^n {(2\pi\ii\xi_i)}^2\widehat{u} = -4\pi^2\abs{\xi}^2\widehat{u}
           $$
+          Ara sigui $\varepsilon>0$ i $B_\varepsilon:=\overline{B(0,\varepsilon)}$. Considerem $\varphi\in\mathcal{S}(\RR^n)$ tal que $\supp\varphi\subseteq \RR^n\setminus B_\varepsilon$. Aleshores, la funció $\phi(\xi):=\frac{\varphi(\xi)}{\abs{\xi}^2}$ està ben definida is pertant a $\mathcal{S}(\RR^n)$. En efecte, si $\xi\in B_{\varepsilon/2}$, com que totes les derivades de $\varphi$ s'anu\lgem en en $B_{\varepsilon/2}$, tenim que:
+          $$\abs{\phi(\xi)} = \abs{\frac{\varphi(\xi)-\varphi(0)-\grad \varphi(0)\cdot \xi}{\abs{\xi}^2}}\leq \abs{H\varphi(\eta)}\frac{\abs{\xi}^2}{2\abs{\xi}^2} =0$$
+          ja que $\abs{\eta} \leq\abs{\xi}$. Per tant, $\phi\in\mathcal{S}(\RR^n)$ i llavors:
+          $$
+            \langle  u,\varphi\rangle = \langle u,\abs{\xi}^2\phi\rangle = \langle \abs{\xi}^2u,\phi\rangle = 0
+          $$
+          Com que això és vàlid $\forall \varepsilon>0$, tenim que $\widehat{u}$ té suport contingut a $\{0\}$ (i no pot ser $\varnothing$, perquè si no seria la solució trivial), i per tant, $u$ és un polinomi, per l'apartat anterior.
   \end{enumerate}
 \end{res}
 \end{document}
